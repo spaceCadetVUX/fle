@@ -277,6 +277,30 @@ class PageController extends Controller
     { 
         return view('front.blogs'); 
     }
+
+
+
+        /**
+     * Display the homev2 page
+     */
+    public function homev2() 
+    { 
+        // blog filter for landing
+        $landingBlogs = Blog::with(['blogCategories:id,name,slug'])
+            ->where('is_published', true)
+            ->whereHas('blogCategories', function ($query) {
+                $query->where(function ($q) {
+                    $q->where('slug', 'landing-blog')
+                        ->orWhereRaw('LOWER(name) = ?', ['Landing blog']);
+                });
+            })
+            ->orderByDesc('published_at')
+            ->orderByDesc('created_at')
+            ->take(4)
+            ->get();
+
+        return view('front.homev2', compact('landingBlogs'));
+    }
 }
 
 

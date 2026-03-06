@@ -15,14 +15,12 @@ Route::get('/', function () {
     return redirect()->to(url('vi'), 301);
 })->name('home');
 
-
-
 // ==============================
 // VIETNAMESE ROUTES (/vi)
 // ==============================
 Route::prefix('vi')->name('vi.')->group(function () {
     Route::get('/', [PageController::class, 'index'])->name('index');
-
+    Route::get('/homev2', [PageController::class, 'homev2'])->name('homev2');
     
     // FRONT PAGES
     Route::controller(PageController::class)->group(function () {
@@ -79,6 +77,7 @@ Route::prefix('vi')->name('vi.')->group(function () {
 // ==============================
 Route::prefix('en')->name('en.')->group(function () {
      Route::get('/', [PageController::class, 'index'])->name('index');
+     Route::get('homev2', [PageController::class, 'homev2'])->name('homev2');
     // FRONT PAGES
     Route::controller(PageController::class)->group(function () {
     Route::get('/lighting-control-solutions', 'lightingControl')

@@ -402,7 +402,8 @@ class DashboardController extends Controller
     {
         try {
             // request received for update
-            
+            \Illuminate\Support\Facades\Log::error('DEBUG PAYLOAD: ' . json_encode($request->all()));
+
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'brand' => 'required|string|max:100',
@@ -632,6 +633,40 @@ class DashboardController extends Controller
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Product update error: ' . $e->getMessage());
             return redirect()->back()->withInput()->with('error', 'Error updating product: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Save product features directly via AJAX
+     */
+    public function saveFeatures(Request $request, \App\Models\Product $product)
+    {
+        try {
+            $validated = $request->validate([
+                'features' => 'nullable|array',
+                'features.*' => 'nullable|string',
+            ]);
+
+            $features = [];
+            if (isset($validated['features']) && is_array($validated['features'])) {
+                $features = array_values(array_filter($validated['features'], function($feature) {
+                    return !empty(trim($feature));
+                }));
+            }
+
+            $product->update(['features' => $features]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Features saved successfully',
+                'features' => $features
+            ]);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\Log::error('Failed to save features: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error saving features: ' . $e->getMessage()
+            ], 500);
         }
     }
 

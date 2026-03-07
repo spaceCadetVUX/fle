@@ -190,6 +190,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::put('/products/{product}', [DashboardController::class, 'updateProduct'])->name('products.update');
     Route::delete('/products/{product}', [DashboardController::class, 'deleteProduct'])->name('products.delete');
     Route::post('/products/{product}/toggle-status', [DashboardController::class, 'toggleProductStatus'])->name('products.toggle-status');
+    Route::post('/products/{product}/save-features', [DashboardController::class, 'saveFeatures'])->name('products.save-features');
 
     // Manage brands
     Route::get('/brands', [DashboardController::class, 'brands'])->name('brands');

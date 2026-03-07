@@ -300,7 +300,7 @@
                                 @endphp
                                 @foreach($features as $feature)
                                 <div class="feature-item flex gap-2">
-                                    <input type="text" name="features[]" value="{{ $feature }}" placeholder="Enter a feature" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="features[]" form="product-form" value="{{ $feature }}" placeholder="Enter a feature" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                                     <button type="button" onclick="removeFeature(this)" class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition text-sm">Remove</button>
                                 </div>
                                 @endforeach
@@ -339,7 +339,7 @@
                                 const newItem = document.createElement('div');
                                 newItem.className = 'feature-item flex gap-2';
                                 newItem.innerHTML = `
-                                    <input type="text" name="features[]" value="" placeholder="Enter a feature" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="features[]" form="product-form" value="" placeholder="Enter a feature" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                                     <button type="button" onclick="removeFeature(this)" class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition text-sm">Remove</button>
                                 `;
                                 container.appendChild(newItem);

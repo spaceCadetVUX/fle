@@ -353,12 +353,16 @@
                                 
                                 @foreach($features as $index => $feature)
                                 <div class="feature-item flex gap-2">
-                                    <input type="text" name="features[]" value="{{ $feature }}" placeholder="Enter a feature" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="features[]" form="product-form" value="{{ $feature }}" placeholder="Enter a feature" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                                     <button type="button" onclick="removeFeature(this)" class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition text-sm">Remove</button>
                                 </div>
                                 @endforeach
                             </div>
-                            <button type="button" onclick="addFeature()" class="mt-3 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">+ Add Feature</button>
+                            <div class="mt-3 flex items-center gap-3">
+                                <button type="button" onclick="addFeature()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">+ Add Feature</button>
+                                <button type="button" onclick="saveFeaturesAjax()" id="btn-save-features" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">Save Features to DB</button>
+                                <span id="save-features-msg" class="text-sm font-medium"></span>
+                            </div>
                         </div>
 
                         <!-- Specifications Section -->
@@ -385,8 +389,8 @@
                                 @endphp
                                 @for($i = 0; $i < $specCount; $i++)
                                 <div class="specification-item flex gap-2">
-                                    <input type="text" name="spec_keys[]" value="{{ $specKeys[$i] ?? '' }}" placeholder="Spec name (e.g., Nguồn điện, Doc)" class="w-1/3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
-                                    <input type="text" name="spec_values[]" value="{{ $specValues[$i] ?? '' }}" placeholder="Value or URL (e.g., 24V DC or https://...)" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="spec_keys[]" form="product-form" value="{{ $specKeys[$i] ?? '' }}" placeholder="Spec name (e.g., Nguồn điện, Doc)" class="w-1/3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="spec_values[]" form="product-form" value="{{ $specValues[$i] ?? '' }}" placeholder="Value or URL (e.g., 24V DC or https://...)" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                                     <button type="button" onclick="removeSpecification(this)" class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition text-sm">Remove</button>
                                 </div>
                                 @endfor
@@ -401,7 +405,7 @@
                                 const newItem = document.createElement('div');
                                 newItem.className = 'feature-item flex gap-2';
                                 newItem.innerHTML = `
-                                    <input type="text" name="features[]" value="" placeholder="Enter a feature" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="features[]" form="product-form" value="" placeholder="Enter a feature" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                                     <button type="button" onclick="removeFeature(this)" class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition text-sm">Remove</button>
                                 `;
                                 container.appendChild(newItem);
@@ -425,8 +429,8 @@
                                 const newItem = document.createElement('div');
                                 newItem.className = 'specification-item flex gap-2';
                                 newItem.innerHTML = `
-                                    <input type="text" name="spec_keys[]" value="" placeholder="Spec name (e.g., Nguồn điện, Doc)" class="w-1/3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
-                                    <input type="text" name="spec_values[]" value="" placeholder="Value or URL (e.g., 24V DC or https://...)" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="spec_keys[]" form="product-form" value="" placeholder="Spec name (e.g., Nguồn điện, Doc)" class="w-1/3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="spec_values[]" form="product-form" value="" placeholder="Value or URL (e.g., 24V DC or https://...)" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                                     <button type="button" onclick="removeSpecification(this)" class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition text-sm">Remove</button>
                                 `;
                                 container.appendChild(newItem);
@@ -765,7 +769,30 @@
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('product-form');
             if (!form) return;
-            form.addEventListener('submit', function () {
+            form.addEventListener('submit', function (e) {
+                console.log("=== FORM SUBMISSION STARTED ===");
+                
+                // Log features
+                const featureInputs = document.querySelectorAll('input[name="features[]"]');
+                console.log("Found " + featureInputs.length + " feature inputs globally");
+                let featureValues = [];
+                featureInputs.forEach((input, index) => {
+                    console.log(`Global Feature ${index}: "${input.value}"`);
+                    featureValues.push(input.value);
+                });
+                console.log("All Features Array:", featureValues);
+
+                // Log features INSIDE form elements
+                const formFeatures = form.elements['features[]'];
+                console.log("Form elements features[] length:", formFeatures ? (formFeatures.length ?? 1) : 0);
+                if (formFeatures && formFeatures.length) {
+                    for(let i=0; i<formFeatures.length; i++) {
+                        console.log("Form Element Feature " + i + ": " + formFeatures[i].value);
+                    }
+                } else if (formFeatures) {
+                    console.log("Form Element Feature 0: " + formFeatures.value);
+                }
+
                 const container = document.getElementById('specifications-container');
                 const items = container ? container.querySelectorAll('.specification-item') : [];
                 const specs = {};
@@ -800,6 +827,52 @@
             const activeButton = document.getElementById('tab-' + tabName);
             activeButton.classList.add('active', 'border-blue-500', 'text-blue-600');
             activeButton.classList.remove('border-transparent', 'text-gray-500');
+        }
+
+        function saveFeaturesAjax() {
+            const btn = document.getElementById('btn-save-features');
+            const msg = document.getElementById('save-features-msg');
+            const inputs = document.querySelectorAll('input[name="features[]"]');
+            
+            let features = [];
+            inputs.forEach(input => {
+                const val = input.value.trim();
+                if (val) features.push(val);
+            });
+
+            btn.disabled = true;
+            btn.textContent = 'Saving...';
+            msg.textContent = '';
+            msg.className = 'text-sm font-medium ml-2';
+
+            fetch('{{ route("admin.products.save-features", $product->id) }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ features: features })
+            })
+            .then(res => res.json())
+            .then(data => {
+                btn.disabled = false;
+                btn.textContent = 'Save Features to DB';
+                if (data.success) {
+                    msg.textContent = 'Features saved successfully!';
+                    msg.classList.add('text-green-600');
+                    setTimeout(() => msg.textContent = '', 3000);
+                } else {
+                    msg.textContent = data.message || 'Error saving features';
+                    msg.classList.add('text-red-600');
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                btn.disabled = false;
+                btn.textContent = 'Save Features to DB';
+                msg.textContent = 'Network error saving features';
+                msg.classList.add('text-red-600');
+            });
         }
 
         // Image Upload Modal and Functions

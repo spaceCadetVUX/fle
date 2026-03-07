@@ -300,7 +300,7 @@
                                 @endphp
                                 @foreach($features as $feature)
                                 <div class="feature-item flex gap-2">
-                                    <input type="text" name="features[]" form="product-form" value="{{ $feature }}" placeholder="Enter a feature" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="features[]" form="product-form-create" value="{{ $feature }}" placeholder="Enter a feature" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                                     <button type="button" onclick="removeFeature(this)" class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition text-sm">Remove</button>
                                 </div>
                                 @endforeach
@@ -323,8 +323,8 @@
                                 @endphp
                                 @for($i = 0; $i < $specCount; $i++)
                                 <div class="specification-item flex gap-2">
-                                    <input type="text" name="spec_keys[]" value="{{ $specKeys[$i] ?? '' }}" placeholder="Spec name (e.g., Nguồn điện, Doc)" class="w-1/3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
-                                    <input type="text" name="spec_values[]" value="{{ $specValues[$i] ?? '' }}" placeholder="Value or URL (e.g., 24V DC or https://...)" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="spec_keys[]" form="product-form-create" value="{{ $specKeys[$i] ?? '' }}" placeholder="Spec name (e.g., Nguồn điện, Doc)" class="w-1/3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="spec_values[]" form="product-form-create" value="{{ $specValues[$i] ?? '' }}" placeholder="Value or URL (e.g., 24V DC or https://...)" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                                     <button type="button" onclick="removeSpecification(this)" class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition text-sm">Remove</button>
                                 </div>
                                 @endfor
@@ -339,7 +339,7 @@
                                 const newItem = document.createElement('div');
                                 newItem.className = 'feature-item flex gap-2';
                                 newItem.innerHTML = `
-                                    <input type="text" name="features[]" form="product-form" value="" placeholder="Enter a feature" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="features[]" form="product-form-create" value="" placeholder="Enter a feature" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                                     <button type="button" onclick="removeFeature(this)" class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition text-sm">Remove</button>
                                 `;
                                 container.appendChild(newItem);
@@ -363,8 +363,8 @@
                                 const newItem = document.createElement('div');
                                 newItem.className = 'specification-item flex gap-2';
                                 newItem.innerHTML = `
-                                    <input type="text" name="spec_keys[]" value="" placeholder="Spec name (e.g., Nguồn điện, Doc)" class="w-1/3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
-                                    <input type="text" name="spec_values[]" value="" placeholder="Value or URL (e.g., 24V DC or https://...)" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="spec_keys[]" form="product-form-create" value="" placeholder="Spec name (e.g., Nguồn điện, Doc)" class="w-1/3 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                    <input type="text" name="spec_values[]" form="product-form-create" value="" placeholder="Value or URL (e.g., 24V DC or https://...)" class="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                                     <button type="button" onclick="removeSpecification(this)" class="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition text-sm">Remove</button>
                                 `;
                                 container.appendChild(newItem);

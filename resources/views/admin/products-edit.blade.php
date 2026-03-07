@@ -360,7 +360,8 @@
                             </div>
                             <div class="mt-3 flex items-center gap-3">
                                 <button type="button" onclick="addFeature()" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">+ Add Feature</button>
-                                <button type="button" onclick="saveFeaturesAjax()" id="btn-save-features" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">Save Features to DB</button>
+                                <!-- jus for debugging -->
+                                <!-- <button type="button" onclick="saveFeaturesAjax()" id="btn-save-features" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">Save Features to DB</button> -->
                                 <span id="save-features-msg" class="text-sm font-medium"></span>
                             </div>
                         </div>

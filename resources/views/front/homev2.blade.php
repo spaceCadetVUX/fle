@@ -1,4 +1,13 @@
-@extends('front.layouts.frontend')
+@extends('front.layouts.frontend', [
+    'seo' => [
+        'title'       => 'Home - Ultimate Sale & New Collection',
+        'description' => 'Discover our Spring 2026 exclusive collections, ultimate sales, and curated fashion picks for men and women.',
+        'keywords'    => 'fashion, sale, new collection, clothing, apparel',
+        'image'       => asset('images/tempSpace/fas (32).jpg'),
+        'type'        => 'website',
+    ]
+])
+
 
 @section('content')
 

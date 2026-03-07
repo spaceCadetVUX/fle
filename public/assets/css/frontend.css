@@ -528,6 +528,33 @@ ul {
   background: var(--color-charcoal);
 }
 
+/* Language Switcher */
+.nav-lang-switcher {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-right: 0.5rem;
+}
+
+.nav-lang-link {
+  font-size: 0.75rem;
+  font-weight: var(--fw-bold);
+  color: var(--color-silver);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.nav-lang-link:hover,
+.nav-lang-link.active {
+  color: var(--color-black);
+}
+
+.nav-lang-divider {
+  font-size: 0.75rem;
+  color: var(--color-silver);
+  user-select: none;
+}
+
 .navbar-toggler {
   border: 1.5px solid var(--color-charcoal);
   padding: 0.3rem 0.55rem;

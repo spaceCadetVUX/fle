@@ -56,6 +56,13 @@
                 {{-- <a href="{{ route('cart') }}" class="nav-icon-btn" aria-label="Cart">
                     <i class="bi bi-bag" id="cartIcon"></i>
                 </a> --}}
+                
+                <div class="nav-lang-switcher ms-1 d-none d-md-flex">
+                    <a href="{{ switch_locale_url('vi') }}" class="nav-lang-link {{ current_locale() === 'vi' ? 'active' : '' }}">VI</a>
+                    <span class="nav-lang-divider">/</span>
+                    <a href="{{ switch_locale_url('en') }}" class="nav-lang-link {{ current_locale() === 'en' ? 'active' : '' }}">EN</a>
+                </div>
+
                 <button class="nav-signup-btn ms-2">Sign Up</button>
             </div>
         </div>

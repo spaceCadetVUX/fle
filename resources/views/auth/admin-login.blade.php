@@ -50,10 +50,5 @@
         </div>
     </form>
 
-    <div class="mt-6 text-center">
-        <p class="text-xs text-gray-500">
-            Default admin credentials:<br>
-            <strong>admin@aicontrol.com</strong> / <strong>admin123</strong>
-        </p>
-    </div>
+
 </x-guest-layout>

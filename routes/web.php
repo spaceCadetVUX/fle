@@ -141,6 +141,18 @@ Route::prefix('en')->name('en.')->group(function () {
 // PROFILE PAGES (protected by auth)
 // ----------------------------
 Route::middleware(['auth'])->group(function () {
+    Route::get('/card', function () {
+        return view('front.card');
+    })->name('user.card');
+    
+    // Redirect standard dashboard request to the card since the RouteServiceProvider goes to /dashboard
+    Route::get('/dashboard', function () {
+        if (auth()->user()->role === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+        return redirect()->route('user.card');
+    })->name('dashboard');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

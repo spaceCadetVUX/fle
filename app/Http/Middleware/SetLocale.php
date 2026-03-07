@@ -17,7 +17,11 @@ class SetLocale
             $request->is('register') ||
             $request->is('password/*') ||
             $request->is('admin') ||
-            $request->is('admin/*')
+            $request->is('admin/*') ||
+            $request->is('dashboard') ||
+            $request->is('card') ||
+            $request->is('profile') ||
+            $request->is('profile/*')
         ) {
             return $next($request);
         }

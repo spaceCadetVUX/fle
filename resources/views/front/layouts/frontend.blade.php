@@ -23,7 +23,9 @@
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Vite Assets -->
-    @vite(['public/assets/css/frontend.css', 'public/assets/js/frontend.js'])
+    <link rel="stylesheet" href="{{ asset('assets/css/frontend.css') }}">
+    <script src="{{ asset('assets/js/frontend.js') }}"></script>
+ 
     {{-- Page specific head content --}}
     @stack('head')
 </head>

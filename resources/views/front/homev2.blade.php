@@ -331,44 +331,7 @@
             </div>
 
             <div class="row g-3" id="womenSliderWrap" data-slider>
-                <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
-                    <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (17).jpg') }}" alt="{{ __('homev2.products.women.p1.name') }}"
-                             style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
-                        <span class="product-tag new">{{ __('homev2.products.tags.new') }}</span>
-                    </div>
-                    <p class="product-name">{{ __('homev2.products.women.p1.name') }}</p>
-                    <p class="product-price">{{ __('homev2.products.women.p1.price') }}</p>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
-                    <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (25).jpg') }}" alt="{{ __('homev2.products.women.p2.name') }}"
-                             style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
-                    </div>
-                    <p class="product-name">{{ __('homev2.products.women.p2.name') }}</p>
-                    <p class="product-price">{{ __('homev2.products.women.p2.price') }}</p>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
-                    <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (28).jpg') }}" alt="{{ __('homev2.products.women.p3.name') }}"
-                             style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
-                        <span class="product-tag sale">{{ __('homev2.products.tags.sale') }}</span>
-                    </div>
-                    <p class="product-name">{{ __('homev2.products.women.p3.name') }}</p>
-                    <p class="product-price">{{ __('homev2.products.women.p3.price') }} <span class="old-price">{{ __('homev2.products.women.p3.old_price') }}</span></p>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
-                    <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (30).jpg') }}" alt="{{ __('homev2.products.women.p4.name') }}"
-                             style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
-                    </div>
-                    <p class="product-name">{{ __('homev2.products.women.p4.name') }}</p>
-                    <p class="product-price">{{ __('homev2.products.women.p4.price') }}</p>
-                </div>
+
             </div>
 
             <div class="products-divider"></div>
@@ -388,44 +351,7 @@
             </div>
 
             <div class="row g-3" id="menSliderWrap" data-slider>
-                <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
-                    <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (56).jpg') }}" alt="{{ __('homev2.products.men.p1.name') }}"
-                             style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
-                        <span class="product-tag new">{{ __('homev2.products.tags.new') }}</span>
-                    </div>
-                    <p class="product-name">{{ __('homev2.products.men.p1.name') }}</p>
-                    <p class="product-price">{{ __('homev2.products.men.p1.price') }}</p>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
-                    <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (26).jpg') }}" alt="{{ __('homev2.products.men.p2.name') }}"
-                             style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
-                    </div>
-                    <p class="product-name">{{ __('homev2.products.men.p2.name') }}</p>
-                    <p class="product-price">{{ __('homev2.products.men.p2.price') }}</p>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
-                    <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (27).jpg') }}" alt="{{ __('homev2.products.men.p3.name') }}"
-                             style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
-                        <span class="product-tag sale">{{ __('homev2.products.tags.sale') }}</span>
-                    </div>
-                    <p class="product-name">{{ __('homev2.products.men.p3.name') }}</p>
-                    <p class="product-price">{{ __('homev2.products.men.p3.price') }} <span class="old-price">{{ __('homev2.products.men.p3.old_price') }}</span></p>
-                </div>
-                <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
-                    <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (39).jpg') }}" alt="{{ __('homev2.products.men.p4.name') }}"
-                             style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
-                    </div>
-                    <p class="product-name">{{ __('homev2.products.men.p4.name') }}</p>
-                    <p class="product-price">{{ __('homev2.products.men.p4.price') }}</p>
-                </div>
+
             </div>
 
         </div>

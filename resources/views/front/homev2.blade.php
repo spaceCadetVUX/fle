@@ -1,10 +1,14 @@
 @extends('front.layouts.frontend', [
     'seo' => [
-        'title'       => 'Home - Ultimate Sale & New Collection',
-        'description' => 'Discover our Spring 2026 exclusive collections, ultimate sales, and curated fashion picks for men and women.',
-        'keywords'    => 'fashion, sale, new collection, clothing, apparel',
+        'title'       => __('homev2.seo.title'),
+        'description' => __('homev2.seo.description'),
+        'keywords'    => __('homev2.seo.keywords'),
         'image'       => asset('images/tempSpace/fas (32).jpg'),
         'type'        => 'website',
+        'hreflangs'   => [
+            'en' => switch_locale_url('en'),
+            'vi' => switch_locale_url('vi'),
+        ]
     ]
 ])
 
@@ -19,61 +23,61 @@
 
             <!-- Item 0: starts CENTER -->
             <div class="hero-item pos-center" data-idx="0">
-                <img src="{{ asset('images/tempSpace/fas (32).jpg') }}" alt="Hero 1">
+                <img src="{{ asset('images/tempSpace/fas (32).jpg') }}" alt="{{ __('homev2.hero.item0.title') }}">
                 <div class="hero-item-overlay"></div>
                 <div class="hero-item-content">
-                    <p class="hero-label">Au — New Collection</p>
-                    <h1 class="hero-title">Ultimate<br>Sale</h1>
-                    <p class="hero-subtitle">New Collection</p>
-                    <a href="#deals" class="btn-dark-custom">Shop Now</a>
+                    <p class="hero-label">{!! __('homev2.hero.item0.label') !!}</p>
+                    <h1 class="hero-title">{!! __('homev2.hero.item0.title') !!}</h1>
+                    <p class="hero-subtitle">{{ __('homev2.hero.item0.subtitle') }}</p>
+                    <a href="#deals" class="btn-dark-custom">{{ __('homev2.hero.item0.btn') }}</a>
                 </div>
             </div>
 
             <!-- Item 1: starts RIGHT -->
             <div class="hero-item pos-right" data-idx="1">
-                <img src="{{ asset('images/tempSpace/fas (33).jpg') }}" alt="Hero 2">
+                <img src="{{ asset('images/tempSpace/fas (33).jpg') }}" alt="{{ __('homev2.hero.item1.title') }}">
                 <div class="hero-item-overlay"></div>
                 <div class="hero-item-content">
-                    <p class="hero-label">SS 2026 — Exclusive</p>
-                    <h1 class="hero-title">New<br>Drops</h1>
-                    <p class="hero-subtitle">Limited Edition</p>
-                    <a href="#products" class="btn-dark-custom">Explore</a>
+                    <p class="hero-label">{!! __('homev2.hero.item1.label') !!}</p>
+                    <h2 class="hero-title">{!! __('homev2.hero.item1.title') !!}</h2>
+                    <p class="hero-subtitle">{{ __('homev2.hero.item1.subtitle') }}</p>
+                    <a href="#products" class="btn-dark-custom">{{ __('homev2.hero.item1.btn') }}</a>
                 </div>
             </div>
 
             <!-- Item 2: starts HIDDEN RIGHT -->
             <div class="hero-item pos-hidden-right" data-idx="2">
-                <img src="{{ asset('images/tempSpace/fas (45).jpg') }}" alt="Hero 3">
+                <img src="{{ asset('images/tempSpace/fas (45).jpg') }}" alt="{{ __('homev2.hero.item2.title') }}">
                 <div class="hero-item-overlay"></div>
                 <div class="hero-item-content">
-                    <p class="hero-label">Women — Curated Picks</p>
-                    <h1 class="hero-title">For<br>Her</h1>
-                    <p class="hero-subtitle">Women's Collection</p>
-                    <a href="#products" class="btn-dark-custom">Shop Women</a>
+                    <p class="hero-label">{!! __('homev2.hero.item2.label') !!}</p>
+                    <h2 class="hero-title">{!! __('homev2.hero.item2.title') !!}</h2>
+                    <p class="hero-subtitle">{{ __('homev2.hero.item2.subtitle') }}</p>
+                    <a href="#products" class="btn-dark-custom">{{ __('homev2.hero.item2.btn') }}</a>
                 </div>
             </div>
 
             <!-- Item 3: starts HIDDEN LEFT -->
             <div class="hero-item pos-hidden-left" data-idx="3">
-                <img src="{{ asset('images/tempSpace/fas (35).jpg') }}" alt="Hero 4">
+                <img src="{{ asset('images/tempSpace/fas (35).jpg') }}" alt="{{ __('homev2.hero.item3.title') }}">
                 <div class="hero-item-overlay"></div>
                 <div class="hero-item-content">
-                    <p class="hero-label">Men — Calibre</p>
-                    <h1 class="hero-title">For<br>Him</h1>
-                    <p class="hero-subtitle">Men's Collection</p>
-                    <a href="#products" class="btn-dark-custom">Shop Men</a>
+                    <p class="hero-label">{!! __('homev2.hero.item3.label') !!}</p>
+                    <h2 class="hero-title">{!! __('homev2.hero.item3.title') !!}</h2>
+                    <p class="hero-subtitle">{{ __('homev2.hero.item3.subtitle') }}</p>
+                    <a href="#products" class="btn-dark-custom">{{ __('homev2.hero.item3.btn') }}</a>
                 </div>
             </div>
 
             <!-- Item 4: starts LEFT -->
             <div class="hero-item pos-left" data-idx="4">
-                <img src="{{ asset('images/tempSpace/fas (50).jpg') }}" alt="Hero 5">
+                <img src="{{ asset('images/tempSpace/fas (50).jpg') }}" alt="{{ __('homev2.hero.item4.title') }}">
                 <div class="hero-item-overlay"></div>
                 <div class="hero-item-content">
-                    <p class="hero-label">New Season — 2026</p>
-                    <h1 class="hero-title">New<br>Season</h1>
-                    <p class="hero-subtitle">Spring Collection</p>
-                    <a href="#products" class="btn-dark-custom">Discover</a>
+                    <p class="hero-label">{!! __('homev2.hero.item4.label') !!}</p>
+                    <h2 class="hero-title">{!! __('homev2.hero.item4.title') !!}</h2>
+                    <p class="hero-subtitle">{{ __('homev2.hero.item4.subtitle') }}</p>
+                    <a href="#products" class="btn-dark-custom">{{ __('homev2.hero.item4.btn') }}</a>
                 </div>
             </div>
 
@@ -105,11 +109,11 @@
     <section id="brands">
         <div class="container">
             <div class="brand-logos">
-                <span class="brand-name large">Chanel</span>
-                <span class="brand-name">Louis Vuitton</span>
-                <span class="brand-name large">Prada</span>
-                <span class="brand-name">Calvin Klein</span>
-                <span class="brand-name large">Denim</span>
+                <span class="brand-name large">{{ __('homev2.brands.b1') }}</span>
+                <span class="brand-name">{{ __('homev2.brands.b2') }}</span>
+                <span class="brand-name large">{{ __('homev2.brands.b3') }}</span>
+                <span class="brand-name">{{ __('homev2.brands.b4') }}</span>
+                <span class="brand-name large">{{ __('homev2.brands.b5') }}</span>
             </div>
         </div>
     </section>
@@ -124,37 +128,36 @@
                 <!-- Text + Countdown -->
                 <div class="col-lg-5 fade-up">
                     <div class="deals-text">
-                        <h2>Deals Of<br>The Month</h2>
+                        <h2>{!! __('homev2.deals.title') !!}</h2>
                         <p>
-                            Don't miss our exclusive monthly deals — curated selections from
-                            the world's leading fashion houses at unbeatable prices. Limited
-                            time, limited stock.
+                            {{ __('homev2.deals.desc') }}<br>
+                            <small class="text-muted d-block mt-2">{{ __('homev2.deals.deal_of_the_month_description') }}</small>
                         </p>
                         <div class="mt-4">
-                            <a href="#products" class="btn-dark-custom">Shop Now</a>
+                            <a href="#products" class="btn-dark-custom">{{ __('homev2.deals.btn') }}</a>
                         </div>
                         <!-- Countdown -->
                         <div class="countdown-wrap">
-                            <p class="countdown-label">Hurry, Before It's Too Late!</p>
+                            <p class="countdown-label">{{ __('homev2.deals.countdown_label') }}</p>
                             <div class="countdown">
                                 <div class="countdown-unit">
                                     <span class="countdown-num" id="cd-days">02</span>
-                                    <span class="countdown-text">Days</span>
+                                    <span class="countdown-text">{{ __('homev2.deals.days') }}</span>
                                 </div>
                                 <span class="countdown-sep">:</span>
                                 <div class="countdown-unit">
                                     <span class="countdown-num" id="cd-hours">06</span>
-                                    <span class="countdown-text">Hours</span>
+                                    <span class="countdown-text">{{ __('homev2.deals.hours') }}</span>
                                 </div>
                                 <span class="countdown-sep">:</span>
                                 <div class="countdown-unit">
                                     <span class="countdown-num" id="cd-mins">05</span>
-                                    <span class="countdown-text">Mins</span>
+                                    <span class="countdown-text">{{ __('homev2.deals.mins') }}</span>
                                 </div>
                                 <span class="countdown-sep">:</span>
                                 <div class="countdown-unit">
                                     <span class="countdown-num" id="cd-secs">30</span>
-                                    <span class="countdown-text">Secs</span>
+                                    <span class="countdown-text">{{ __('homev2.deals.secs') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -168,29 +171,29 @@
                         <div class="deals-slide active">
                             <img src="{{ asset('images/tempSpace/fas (3).jpg') }}" alt="Deals 1">
                             <div class="deals-cta-overlay">
-                                <a href="#products" class="btn-white-custom deals-cta-btn">Shop Casual Luxe</a>
+                                <a href="#products" class="btn-white-custom deals-cta-btn">{{ __('homev2.deals.slide1_btn') }}</a>
                             </div>
                         </div>
 
                         <div class="deals-slide">
                             <img src="{{ asset('images/tempSpace/fas (28).jpg') }}" alt="Deals 2">
-                            <div class="deals-badge"><span>50%</span>OFF</div>
+                            <div class="deals-badge"><span>50%</span>{{ __('homev2.deals.slide2_badge') }}</div>
                             <div class="deals-cta-overlay">
-                                <a href="#products" class="btn-white-custom deals-cta-btn">Discover Offers</a>
+                                <a href="#products" class="btn-white-custom deals-cta-btn">{{ __('homev2.deals.slide2_btn') }}</a>
                             </div>
                         </div>
 
                         <div class="deals-slide">
                             <img src="{{ asset('images/tempSpace/fas (45).jpg') }}" alt="Deals 3">
                             <div class="deals-cta-overlay">
-                                <a href="#products" class="btn-white-custom deals-cta-btn">Explore Collection</a>
+                                <a href="#products" class="btn-white-custom deals-cta-btn">{{ __('homev2.deals.slide3_btn') }}</a>
                             </div>
                         </div>
 
                         <div class="deals-slide">
                             <img src="{{ asset('images/tempSpace/fas (56).jpg') }}" alt="Deals 4">
                             <div class="deals-cta-overlay">
-                                <a href="#products" class="btn-white-custom deals-cta-btn">Get The Look</a>
+                                <a href="#products" class="btn-white-custom deals-cta-btn">{{ __('homev2.deals.slide4_btn') }}</a>
                             </div>
                         </div>
 
@@ -219,9 +222,9 @@
     ========================================== --}}
     <section id="featured">
         <div class="calibre-header fade-up">
-            <p class="calibre-eyebrow">Featured Brand</p>
-            <h2 class="calibre-title">Calibre</h2>
-            <p class="calibre-subtitle">Men's Contemporary Collection — 2026</p>
+            <p class="calibre-eyebrow">{{ __('homev2.featured.eyebrow') }}</p>
+            <h2 class="calibre-title">{{ __('homev2.featured.title') }}</h2>
+            <p class="calibre-subtitle">{{ __('homev2.featured.subtitle') }}</p>
         </div>
 
         <div class="calibre-blog-grid">
@@ -232,9 +235,9 @@
                     <div class="cblog-overlay"></div>
                 </div>
                 <div class="cblog-content">
-                    <h3 class="cblog-heading">The Modern<br>Gentleman</h3>
-                    <p class="cblog-desc">Refined silhouettes crafted for the man who commands every room he enters.</p>
-                    <a href="#products" class="cblog-cta btn-white-custom">Read Story</a>
+                    <h3 class="cblog-heading">{!! __('homev2.featured.cblog1.title') !!}</h3>
+                    <p class="cblog-desc">{{ __('homev2.featured.cblog1.desc') }}</p>
+                    <a href="#products" class="cblog-cta btn-white-custom">{{ __('homev2.featured.cblog1.btn') }}</a>
                 </div>
             </article>
 
@@ -244,8 +247,8 @@
                     <div class="cblog-overlay"></div>
                 </div>
                 <div class="cblog-content cblog-content--bottom">
-                    <h3 class="cblog-heading">Layer Up</h3>
-                    <a href="#products" class="cblog-cta btn-white-custom">Explore</a>
+                    <h3 class="cblog-heading">{!! __('homev2.featured.cblog2.title') !!}</h3>
+                    <a href="#products" class="cblog-cta btn-white-custom">{{ __('homev2.featured.cblog2.btn') }}</a>
                 </div>
             </article>
 
@@ -255,18 +258,18 @@
                     <div class="cblog-overlay"></div>
                 </div>
                 <div class="cblog-content cblog-content--center">
-                    <h3 class="cblog-heading">Sharp<br>Cuts</h3>
-                    <a href="#products" class="cblog-cta btn-outline-custom cblog-cta--light">Shop Now</a>
+                    <h3 class="cblog-heading">{!! __('homev2.featured.cblog3.title') !!}</h3>
+                    <a href="#products" class="cblog-cta btn-outline-custom cblog-cta--light">{{ __('homev2.featured.cblog3.btn') }}</a>
                 </div>
             </article>
 
             <article class="cblog cblog-4 cblog--editorial fade-up">
                 <div class="cblog-editorial-inner">
-                    <span class="cblog-tag cblog-tag--dark">SS 2026</span>
-                    <p class="cblog-editorial-quote">"Dress well.<br>Live bold."</p>
-                    <h3 class="cblog-heading cblog-heading--dark">The Calibre<br>Manifesto</h3>
-                    <p class="cblog-desc cblog-desc--dark">Six decades of precision. One season of reinvention.</p>
-                    <a href="#products" class="cblog-cta btn-dark-custom">Discover More</a>
+                    <span class="cblog-tag cblog-tag--dark">{{ __('homev2.featured.cblog4.tag') }}</span>
+                    <p class="cblog-editorial-quote">{!! __('homev2.featured.cblog4.quote') !!}</p>
+                    <h3 class="cblog-heading cblog-heading--dark">{!! __('homev2.featured.cblog4.title') !!}</h3>
+                    <p class="cblog-desc cblog-desc--dark">{{ __('homev2.featured.cblog4.desc') }}</p>
+                    <a href="#products" class="cblog-cta btn-dark-custom">{{ __('homev2.featured.cblog4.btn') }}</a>
                 </div>
             </article>
 
@@ -276,8 +279,8 @@
                     <div class="cblog-overlay"></div>
                 </div>
                 <div class="cblog-content cblog-content--bottom">
-                    <h3 class="cblog-heading">Street<br>Refined</h3>
-                    <a href="#products" class="cblog-cta btn-white-custom">View Look</a>
+                    <h3 class="cblog-heading">{!! __('homev2.featured.cblog5.title') !!}</h3>
+                    <a href="#products" class="cblog-cta btn-white-custom">{{ __('homev2.featured.cblog5.btn') }}</a>
                 </div>
             </article>
 
@@ -287,9 +290,9 @@
                     <div class="cblog-overlay"></div>
                 </div>
                 <div class="cblog-content">
-                    <h3 class="cblog-heading">Cold Weather<br>Edit</h3>
-                    <p class="cblog-desc">From puffer jackets to overcoats — stay warm in undeniable style.</p>
-                    <a href="#products" class="cblog-cta btn-white-custom">Shop Outerwear</a>
+                    <h3 class="cblog-heading">{!! __('homev2.featured.cblog6.title') !!}</h3>
+                    <p class="cblog-desc">{{ __('homev2.featured.cblog6.desc') }}</p>
+                    <a href="#products" class="cblog-cta btn-white-custom">{{ __('homev2.featured.cblog6.btn') }}</a>
                 </div>
             </article>
 
@@ -299,8 +302,8 @@
                     <div class="cblog-overlay"></div>
                 </div>
                 <div class="cblog-content cblog-content--bottom-right">
-                    <h3 class="cblog-heading">Calibre<br>Man</h3>
-                    <a href="#products" class="cblog-cta btn-white-custom">See Collection</a>
+                    <h3 class="cblog-heading">{!! __('homev2.featured.cblog7.title') !!}</h3>
+                    <a href="#products" class="cblog-cta btn-white-custom">{{ __('homev2.featured.cblog7.btn') }}</a>
                 </div>
             </article>
 
@@ -315,9 +318,9 @@
 
             <!-- For Women -->
             <div class="products-header fade-up">
-                <h2 class="products-title">For Women</h2>
+                <h2 class="products-title">{{ __('homev2.products.women_title') }}</h2>
                 <div class="products-nav">
-                    <a href="#" class="view-all-link">Get All</a>
+                    <a href="#" class="view-all-link">{{ __('homev2.products.get_all') }}</a>
                     <button class="products-arrow" data-prev aria-label="Previous" id="womenPrev">
                         <i class="bi bi-chevron-left"></i>
                     </button>
@@ -330,41 +333,41 @@
             <div class="row g-3" id="womenSliderWrap" data-slider>
                 <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
                     <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (17).jpg') }}" alt="Women's Coat"
+                        <img src="{{ asset('images/tempSpace/fas (17).jpg') }}" alt="{{ __('homev2.products.women.p1.name') }}"
                              style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">Quick Add</div>
-                        <span class="product-tag new">New</span>
+                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
+                        <span class="product-tag new">{{ __('homev2.products.tags.new') }}</span>
                     </div>
-                    <p class="product-name">Women's Coat</p>
-                    <p class="product-price">3,999,000 VND</p>
+                    <p class="product-name">{{ __('homev2.products.women.p1.name') }}</p>
+                    <p class="product-price">{{ __('homev2.products.women.p1.price') }}</p>
                 </div>
                 <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
                     <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (25).jpg') }}" alt="Slim Blazer"
+                        <img src="{{ asset('images/tempSpace/fas (25).jpg') }}" alt="{{ __('homev2.products.women.p2.name') }}"
                              style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">Quick Add</div>
+                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
                     </div>
-                    <p class="product-name">Slim Blazer</p>
-                    <p class="product-price">2,599,000 VND</p>
+                    <p class="product-name">{{ __('homev2.products.women.p2.name') }}</p>
+                    <p class="product-price">{{ __('homev2.products.women.p2.price') }}</p>
                 </div>
                 <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
                     <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (28).jpg') }}" alt="Casual Knit Set"
+                        <img src="{{ asset('images/tempSpace/fas (28).jpg') }}" alt="{{ __('homev2.products.women.p3.name') }}"
                              style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">Quick Add</div>
-                        <span class="product-tag sale">Sale</span>
+                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
+                        <span class="product-tag sale">{{ __('homev2.products.tags.sale') }}</span>
                     </div>
-                    <p class="product-name">Casual Knit Set</p>
-                    <p class="product-price">1,899,000 VND <span class="old-price">2,500,000 VND</span></p>
+                    <p class="product-name">{{ __('homev2.products.women.p3.name') }}</p>
+                    <p class="product-price">{{ __('homev2.products.women.p3.price') }} <span class="old-price">{{ __('homev2.products.women.p3.old_price') }}</span></p>
                 </div>
                 <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
                     <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (30).jpg') }}" alt="Wide-Leg Trousers"
+                        <img src="{{ asset('images/tempSpace/fas (30).jpg') }}" alt="{{ __('homev2.products.women.p4.name') }}"
                              style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">Quick Add</div>
+                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
                     </div>
-                    <p class="product-name">Wide-Leg Trousers</p>
-                    <p class="product-price">1,499,000 VND</p>
+                    <p class="product-name">{{ __('homev2.products.women.p4.name') }}</p>
+                    <p class="product-price">{{ __('homev2.products.women.p4.price') }}</p>
                 </div>
             </div>
 
@@ -372,9 +375,9 @@
 
             <!-- For Men -->
             <div class="products-header fade-up">
-                <h2 class="products-title">For Men</h2>
+                <h2 class="products-title">{{ __('homev2.products.men_title') }}</h2>
                 <div class="products-nav">
-                    <a href="#" class="view-all-link">Get All</a>
+                    <a href="#" class="view-all-link">{{ __('homev2.products.get_all') }}</a>
                     <button class="products-arrow" data-prev aria-label="Previous" id="menPrev">
                         <i class="bi bi-chevron-left"></i>
                     </button>
@@ -387,41 +390,41 @@
             <div class="row g-3" id="menSliderWrap" data-slider>
                 <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
                     <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (56).jpg') }}" alt="Leather Jacket"
+                        <img src="{{ asset('images/tempSpace/fas (56).jpg') }}" alt="{{ __('homev2.products.men.p1.name') }}"
                              style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">Quick Add</div>
-                        <span class="product-tag new">New</span>
+                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
+                        <span class="product-tag new">{{ __('homev2.products.tags.new') }}</span>
                     </div>
-                    <p class="product-name">Leather Jacket</p>
-                    <p class="product-price">5,200,000 VND</p>
+                    <p class="product-name">{{ __('homev2.products.men.p1.name') }}</p>
+                    <p class="product-price">{{ __('homev2.products.men.p1.price') }}</p>
                 </div>
                 <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
                     <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (26).jpg') }}" alt="Fitted Turtleneck"
+                        <img src="{{ asset('images/tempSpace/fas (26).jpg') }}" alt="{{ __('homev2.products.men.p2.name') }}"
                              style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">Quick Add</div>
+                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
                     </div>
-                    <p class="product-name">Fitted Turtleneck</p>
-                    <p class="product-price">1,299,000 VND</p>
+                    <p class="product-name">{{ __('homev2.products.men.p2.name') }}</p>
+                    <p class="product-price">{{ __('homev2.products.men.p2.price') }}</p>
                 </div>
                 <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
                     <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (27).jpg') }}" alt="Oversized Puffer"
+                        <img src="{{ asset('images/tempSpace/fas (27).jpg') }}" alt="{{ __('homev2.products.men.p3.name') }}"
                              style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">Quick Add</div>
-                        <span class="product-tag sale">Sale</span>
+                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
+                        <span class="product-tag sale">{{ __('homev2.products.tags.sale') }}</span>
                     </div>
-                    <p class="product-name">Oversized Puffer</p>
-                    <p class="product-price">2,799,000 VND <span class="old-price">3,500,000 VND</span></p>
+                    <p class="product-name">{{ __('homev2.products.men.p3.name') }}</p>
+                    <p class="product-price">{{ __('homev2.products.men.p3.price') }} <span class="old-price">{{ __('homev2.products.men.p3.old_price') }}</span></p>
                 </div>
                 <div class="col-6 col-md-4 col-lg-3 product-card fade-up">
                     <div class="product-img-wrap">
-                        <img src="{{ asset('images/tempSpace/fas (39).jpg') }}" alt="Slim Chino Pants"
+                        <img src="{{ asset('images/tempSpace/fas (39).jpg') }}" alt="{{ __('homev2.products.men.p4.name') }}"
                              style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">
-                        <div class="product-quick-add">Quick Add</div>
+                        <div class="product-quick-add">{{ __('homev2.products.quick_add') }}</div>
                     </div>
-                    <p class="product-name">Slim Chino Pants</p>
-                    <p class="product-price">1,499,000 VND</p>
+                    <p class="product-name">{{ __('homev2.products.men.p4.name') }}</p>
+                    <p class="product-price">{{ __('homev2.products.men.p4.price') }}</p>
                 </div>
             </div>
 

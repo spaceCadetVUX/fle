@@ -58,10 +58,14 @@
                                 @error('order') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                             </div>
 
-                            <div class="flex items-end pb-2">
+                            <div class="flex flex-col space-y-2 pb-2">
                                 <label class="flex items-center">
                                     <input type="checkbox" name="status" value="active" {{ old('status', $category->status) === 'active' ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                     <span class="ml-2 text-sm text-gray-700">Active (visible on website)</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="display_on_home" value="1" {{ old('display_on_home', $category->display_on_home) ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <span class="ml-2 text-sm text-gray-700">Display on Home Page</span>
                                 </label>
                             </div>
                         </div>

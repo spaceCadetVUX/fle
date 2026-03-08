@@ -17,10 +17,12 @@ class Category extends Model
         'parent_id',
         'status',
         'order',
+        'display_on_home',
     ];
 
     protected $casts = [
         'status' => 'boolean',
+        'display_on_home' => 'boolean',
         'order' => 'integer',
     ];
 

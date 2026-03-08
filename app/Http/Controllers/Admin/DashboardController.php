@@ -889,11 +889,13 @@ class DashboardController extends Controller
             'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:categories,id',
             'status' => 'nullable|boolean',
+            'display_on_home' => 'nullable|boolean',
             'order' => 'nullable|integer|min:0',
         ]);
 
         $validated['slug'] = \Illuminate\Support\Str::slug($request->name);
         $validated['status'] = $request->has('status') ? 1 : 0;
+        $validated['display_on_home'] = $request->has('display_on_home') ? 1 : 0;
         $validated['order'] = $request->order ?? 0;
         
         \App\Models\Category::create($validated);
@@ -924,6 +926,7 @@ class DashboardController extends Controller
             'description' => 'nullable|string',
             'parent_id' => 'nullable|exists:categories,id',
             'status' => 'nullable|boolean',
+            'display_on_home' => 'nullable|boolean',
             'order' => 'nullable|integer|min:0',
         ]);
 
@@ -937,6 +940,7 @@ class DashboardController extends Controller
         }
         
         $validated['status'] = $request->has('status') ? 1 : 0;
+        $validated['display_on_home'] = $request->has('display_on_home') ? 1 : 0;
         $validated['order'] = $request->order ?? 0;
         
         $category->update($validated);
@@ -1228,6 +1232,7 @@ class DashboardController extends Controller
             'description' => 'nullable|string',
             'icon' => 'nullable|string|max:255',
             'order' => 'nullable|integer',
+            'display_on_home' => 'nullable|boolean',
         ]);
 
         if (empty($validated['slug'])) {
@@ -1235,6 +1240,7 @@ class DashboardController extends Controller
         }
 
         $validated['status'] = $request->has('status') ? 'active' : 'inactive';
+        $validated['display_on_home'] = $request->has('display_on_home') ? 1 : 0;
         \App\Models\ProjectCategory::create($validated);
 
         return redirect()->route('admin.project-categories')->with('success', 'Project category created successfully!');
@@ -1262,9 +1268,11 @@ class DashboardController extends Controller
             'description' => 'nullable|string',
             'icon' => 'nullable|string|max:255',
             'order' => 'nullable|integer',
+            'display_on_home' => 'nullable|boolean',
         ]);
 
         $validated['status'] = $request->has('status') ? 'active' : 'inactive';
+        $validated['display_on_home'] = $request->has('display_on_home') ? 1 : 0;
         $category->update($validated);
 
         return redirect()->route('admin.project-categories')->with('success', 'Project category updated successfully!');

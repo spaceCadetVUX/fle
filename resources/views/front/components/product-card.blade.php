@@ -9,7 +9,7 @@
     'alt' => null,
 ])
 
-<div {{ $attributes->merge(['class' => 'product-card']) }}>
+<div {{ isset($attributes) ? $attributes->merge(['class' => 'product-card']) : 'class="product-card"' }}>
     <div class="product-img-wrap">
         <img src="{{ $image }}" alt="{{ $alt ?? $name }}"
              style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block;">

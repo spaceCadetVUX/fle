@@ -17,10 +17,12 @@ class ProjectCategory extends Model
         'icon',
         'order',
         'status',
+        'display_on_home',
     ];
 
     protected $casts = [
         'order' => 'integer',
+        'display_on_home' => 'boolean',
     ];
 
     /**

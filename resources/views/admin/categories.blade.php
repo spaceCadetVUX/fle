@@ -59,7 +59,8 @@
                                     <div class="mt-1 text-xs text-gray-500">
                                         Order: {{ $rootCategory->order }} | 
                                         Subcategories: {{ $rootCategory->children->count() }} | 
-                                        Products: {{ $rootCategory->products()->count() }}
+                                        Products: {{ $rootCategory->products()->count() }} |
+                                        On Home: {!! $rootCategory->display_on_home ? '<span class="text-blue-600 font-semibold">Yes</span>' : 'No' !!}
                                     </div>
                                 </div>
                             </div>
@@ -100,6 +101,7 @@
                                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Products</th>
                                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Order</th>
                                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                            <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">On Home</th>
                                             <th class="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
                                         </tr>
                                     </thead>
@@ -123,6 +125,13 @@
                                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Active</span>
                                                     @else
                                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Inactive</span>
+                                                    @endif
+                                                </td>
+                                                <td class="px-4 py-3">
+                                                    @if($child->display_on_home)
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Yes</span>
+                                                    @else
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">No</span>
                                                     @endif
                                                 </td>
                                                 <td class="px-4 py-3 text-right text-sm font-medium">

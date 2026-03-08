@@ -299,7 +299,30 @@ class PageController extends Controller
             ->take(4)
             ->get();
 
-        return view('front.homev2', compact('landingBlogs'));
+        // Fetch categories that have display_on_home = true
+        $homeCategories = \App\Models\Category::where('display_on_home', true)
+            ->where('status', true)
+            ->orderBy('order')
+            ->get();
+
+        // Create an array mapping category slugs/names to their products
+        $homeCategoryProducts = [];
+        
+        foreach ($homeCategories as $category) {
+            $homeCategoryProducts[$category->id] = [
+                'category' => $category,
+                'products' => \App\Models\Product::with('categories')
+                    ->whereHas('categories', function($q) use ($category) {
+                        $q->where('categories.id', $category->id);
+                    })
+                    ->published()
+                    ->latest()
+                    ->take(8)
+                    ->get()
+            ];
+        }
+
+        return view('front.homev2', compact('landingBlogs', 'homeCategoryProducts'));
     }
 }
 

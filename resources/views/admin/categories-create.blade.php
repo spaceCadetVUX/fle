@@ -58,6 +58,13 @@
                                 <span class="ml-2 text-sm text-gray-700">Active (available for product selection)</span>
                             </label>
                         </div>
+
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="display_on_home" value="1" class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-700">Display on Home Page (e.g., in "Women" / "Men" sections)</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
 

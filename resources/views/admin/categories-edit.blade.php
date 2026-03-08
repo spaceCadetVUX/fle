@@ -68,6 +68,13 @@
                             </label>
                         </div>
 
+                        <div>
+                            <label class="flex items-center">
+                                <input type="checkbox" name="display_on_home" value="1" {{ old('display_on_home', $category->display_on_home) ? 'checked' : '' }} class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <span class="ml-2 text-sm text-gray-700">Display on Home Page (e.g., in "Women" / "Men" sections)</span>
+                            </label>
+                        </div>
+
                         <div class="border-t pt-4">
                             <div class="grid grid-cols-2 gap-4 text-sm text-gray-600">
                                 <div>

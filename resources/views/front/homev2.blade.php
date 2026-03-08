@@ -316,43 +316,46 @@
     <section id="products" class="section-pad">
         <div class="container">
 
-            <!-- For Women -->
-            <div class="products-header fade-up">
-                <h2 class="products-title">{{ __('homev2.products.women_title') }}</h2>
-                <div class="products-nav">
-                    <a href="#" class="view-all-link">{{ __('homev2.products.get_all') }}</a>
-                    <button class="products-arrow" data-prev aria-label="Previous" id="womenPrev">
-                        <i class="bi bi-chevron-left"></i>
-                    </button>
-                    <button class="products-arrow" data-next aria-label="Next" id="womenNext">
-                        <i class="bi bi-chevron-right"></i>
-                    </button>
+            @foreach($homeCategoryProducts as $categoryId => $data)
+                @php
+                    $category = $data['category'];
+                    $products = $data['products'];
+                    // Use category slug for unique IDs in JS navigation arrows
+                    $sliderId = $category->slug . 'SliderWrap';
+                    $prevId = $category->slug . 'Prev';
+                    $nextId = $category->slug . 'Next';
+                @endphp
+                <div class="products-header fade-up">
+                    <h2 class="products-title">{{ $category->name }}</h2>
+                    <div class="products-nav">
+                        <a href="{{ route(current_locale() . '.product.shop', ['category' => $category->slug]) }}" class="view-all-link">{{ __('homev2.products.get_all') }}</a>
+                        <button class="products-arrow" data-prev aria-label="Previous" id="{{ $prevId }}">
+                            <i class="bi bi-chevron-left"></i>
+                        </button>
+                        <button class="products-arrow" data-next aria-label="Next" id="{{ $nextId }}">
+                            <i class="bi bi-chevron-right"></i>
+                        </button>
+                    </div>
                 </div>
-            </div>
 
-            <div class="row g-3" id="womenSliderWrap" data-slider>
-
-            </div>
-
-            <div class="products-divider"></div>
-
-            <!-- For Men -->
-            <div class="products-header fade-up">
-                <h2 class="products-title">{{ __('homev2.products.men_title') }}</h2>
-                <div class="products-nav">
-                    <a href="#" class="view-all-link">{{ __('homev2.products.get_all') }}</a>
-                    <button class="products-arrow" data-prev aria-label="Previous" id="menPrev">
-                        <i class="bi bi-chevron-left"></i>
-                    </button>
-                    <button class="products-arrow" data-next aria-label="Next" id="menNext">
-                        <i class="bi bi-chevron-right"></i>
-                    </button>
+                <div class="row g-3" id="{{ $sliderId }}" data-slider>
+                    @foreach($products as $product)
+                        <div class="col-6 col-md-4 col-lg-3">
+                            @include('front.components.product-card', [
+                                'image' => $product->image_url ? (str_starts_with($product->image_url, 'http') ? $product->image_url : asset($product->image_url)) : asset('assets/img/product/default.jpg'),
+                                'name' => $product->name,
+                                'price' => ($product->sale_price && $product->sale_price < $product->price) ? number_format($product->sale_price, 0, ',', '.') . 'đ' : number_format($product->price ?? 0, 0, ',', '.') . 'đ',
+                                'oldPrice' => ($product->sale_price && $product->sale_price < $product->price) ? number_format($product->price, 0, ',', '.') . 'đ' : null,
+                                'url' => route(current_locale() . '.product.show', $product->slug ?? '#'),
+                            ])
+                        </div>
+                    @endforeach
                 </div>
-            </div>
 
-            <div class="row g-3" id="menSliderWrap" data-slider>
-
-            </div>
+                @if(!$loop->last)
+                    <div class="products-divider"></div>
+                @endif
+            @endforeach
 
         </div>
     </section>

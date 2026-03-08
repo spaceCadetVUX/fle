@@ -11,21 +11,6 @@ class SetLocale
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if (
-            $request->is('login') ||
-            $request->is('logout') ||
-            $request->is('register') ||
-            $request->is('password/*') ||
-            $request->is('admin') ||
-            $request->is('admin/*') ||
-            $request->is('dashboard') ||
-            $request->is('card') ||
-            $request->is('profile') ||
-            $request->is('profile/*')
-        ) {
-            return $next($request);
-        }
-
         $supportedLocales = ['vi', 'en'];
         $locale = $request->segment(1);
 
@@ -33,6 +18,7 @@ class SetLocale
             return redirect('/vi/' . ltrim($request->path(), '/'), 301);
         }
 
+        \Illuminate\Support\Facades\URL::defaults(['locale' => $locale]);
         App::setLocale($locale);
 
         return $next($request);

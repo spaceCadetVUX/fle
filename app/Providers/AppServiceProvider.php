@@ -23,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        // Fallback default locale for URLs generated before middleware or in CLI/queue
+        \Illuminate\Support\Facades\URL::defaults(['locale' => config('app.locale', 'vi')]);
     }
 }

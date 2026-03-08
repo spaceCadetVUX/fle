@@ -48,7 +48,7 @@
             @forelse($categories as $rootCategory)
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-4">
                     <!-- Root Category Header -->
-                    <div class="p-6 bg-blue-50 border-b border-blue-100">
+                    <div class="p-6  border-b border-blue-100">
                         <div class="flex justify-between items-center">
                             <div class="flex items-center space-x-4">
                                 <div>
@@ -81,8 +81,8 @@
                     </div>
 
                     <!-- Child Categories -->
-                    <div class="p-6">
-                        <div class="flex justify-between items-center mb-4">
+                    <div class="p-6 bg-blue-50 ">
+                        <div class="flex justify-between items-center mb-4 ">
                             <h4 class="text-md font-semibold text-gray-700">Subcategories</h4>
                             <a href="{{ route('admin.categories.create', ['parent' => $rootCategory->id]) }}" class="inline-flex items-center px-3 py-1 bg-green-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-700">
                                 <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,8 +94,8 @@
 
                         @if($rootCategory->children->count() > 0)
                             <div class="overflow-x-auto">
-                                <table class="min-w-full divide-y divide-gray-200">
-                                    <thead class="bg-gray-50">
+                                <table class="min-w-full divide-y divide-gray-200 ">
+                                    <thead class="bg-blue-90">
                                         <tr>
                                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
                                             <th class="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Products</th>
@@ -107,7 +107,7 @@
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
                                         @foreach($rootCategory->children->sortBy('order') as $child)
-                                            <tr class="hover:bg-gray-50">
+                                            <tr class="hover:bg-gray-50 bg-blue-50">
                                                 <td class="px-4 py-3">
                                                     <div class="text-sm font-medium text-gray-900">
                                                         <i class="fas fa-angle-right text-gray-400"></i> {{ $child->name }}

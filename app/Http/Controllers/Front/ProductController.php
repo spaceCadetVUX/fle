@@ -106,7 +106,7 @@ class ProductController extends Controller
                 break;
         }
 
-        $products = $query->paginate(9)->withQueryString();
+        $products = $query->paginate(12)->withQueryString();
 
         // Get all active brands for the filter sidebar
         $brands = \App\Models\Brand::where('status', 1)
@@ -122,7 +122,7 @@ class ProductController extends Controller
             ->orderBy('order')
             ->get();
 
-        return view('front.shop', compact('products', 'brands', 'categories'));
+        return view('front.productPageV2', compact('products', 'brands', 'categories'));
     }
 
     /**
@@ -183,7 +183,7 @@ class ProductController extends Controller
             ->orderBy('order')
             ->get();
 
-        return view('front.shop', compact('products', 'brand', 'brands', 'categories'));
+        return view('front.productPageV2', compact('products', 'brand', 'brands', 'categories'));
     }
 
     /**
@@ -229,7 +229,7 @@ class ProductController extends Controller
             ->orderBy('order')
             ->get();
 
-        return view('front.shop', compact('products', 'keyword', 'brands', 'categories'));
+        return view('front.productPageV2', compact('products', 'keyword', 'brands', 'categories'));
     }
 
     /**

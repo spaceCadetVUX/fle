@@ -18,7 +18,6 @@ return new class extends Migration {
             $table->string('catalog')->nullable();
             $table->text('short_description')->nullable();
             $table->longText('description')->nullable();
-            // features and specifications are added in a later migration
             $table->string('image_url')->nullable();
             $table->string('image_alt')->nullable();
             $table->json('gallery_images')->nullable();

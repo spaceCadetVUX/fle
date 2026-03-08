@@ -76,7 +76,7 @@
   --tp-border-2: #e7e7e7;
 
   /* main color */
-  --tp-brand-primary-color: #34679A;      
+  --tp-brand-primary-color: #34679A;
   --tp-navi-background-color: #14293D;
   --tp-secondary-color: #2AB7CA;
   --tp-secondary-light-color: #6bd3e0;
@@ -105,37 +105,49 @@
   letter-spacing: -4px;
   text-transform: uppercase;
 }
-.heading-h1-highlight{
+
+.heading-h1-highlight {
   color: var(--tp-brand-primary-color);
 }
-@media only screen and (min-width: 1200px) and (max-width: 1399px), only screen and (min-width: 992px) and (max-width: 1199px) {
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px),
+only screen and (min-width: 992px) and (max-width: 1199px) {
   .heading-h1 {
     font-size: 90px;
   }
 }
-@media only screen and (min-width: 768px) and (max-width: 991px), (max-width: 767px) {
+
+@media only screen and (min-width: 768px) and (max-width: 991px),
+(max-width: 767px) {
   .heading-h1 {
     font-size: 70px;
   }
 }
-@media only screen and (min-width: 768px) and (max-width: 991px), (max-width: 767px) {
+
+@media only screen and (min-width: 768px) and (max-width: 991px),
+(max-width: 767px) {
   .heading-h1-box {
     flex-wrap: wrap;
     justify-content: start !important;
   }
 }
+
 .heading-h1-box p {
   color: #111013;
   font-size: 18px;
   font-weight: 400;
   line-height: 26px;
 }
-@media only screen and (min-width: 768px) and (max-width: 991px), (max-width: 767px) {
+
+@media only screen and (min-width: 768px) and (max-width: 991px),
+(max-width: 767px) {
   .heading-h1-box p br {
     display: none;
   }
 }
-@media only screen and (min-width: 768px) and (max-width: 991px), (max-width: 767px) {
+
+@media only screen and (min-width: 768px) and (max-width: 991px),
+(max-width: 767px) {
   .heading-h1-box p {
     padding-top: 20px;
   }
@@ -146,9 +158,12 @@
 }
 
 .cert-img {
-  width: 200px; /* or 100%, 80px, etc. */
-  height: auto; /* keeps the aspect ratio */
-  margin-bottom: 20px; /* space between images */
+  width: 200px;
+  /* or 100%, 80px, etc. */
+  height: auto;
+  /* keeps the aspect ratio */
+  margin-bottom: 20px;
+  /* space between images */
   overlay: auto;
 }
 
@@ -157,7 +172,7 @@
 .custom-card {
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   background: #fff;
   display: flex;
   flex-direction: column;
@@ -185,9 +200,17 @@
 }
 
 @keyframes fadePulse {
-  0% { opacity: 0.03; }
-  50% { opacity: 0.12; }
-  100% { opacity: 0.03; }
+  0% {
+    opacity: 0.03;
+  }
+
+  50% {
+    opacity: 0.12;
+  }
+
+  100% {
+    opacity: 0.03;
+  }
 }
 
 .card-title {
@@ -223,7 +246,8 @@
 }
 
 .card-link:hover {
-  color: #34679A; /* your primary color */
+  color: #34679A;
+  /* your primary color */
 }
 
 .card-image img {
@@ -231,10 +255,11 @@
   height: auto;
   display: block;
 }
+
 .card-number-gradient {
   font-size: 120px;
   font-weight: 800;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.05));
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.05));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-align: center;
@@ -277,8 +302,9 @@
   background: linear-gradient(145deg, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.1));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  opacity:0.1;
-  z-index: 0; /* behind all content */
+  opacity: 0.1;
+  z-index: 0;
+  /* behind all content */
   pointer-events: none;
 }
 
@@ -312,151 +338,166 @@
 
 /* CSS Variables for easy color changes */
 :root {
-    --popup-zalo-blue: #0068FF;
-    --popup-call-green: var(--tp-brand-primary-color);
-    --popup-text-dark: #212529;
-    --popup-text-light: #6c757d;
-    --popup-bg-light: #f8f9fa;
-    --popup-border-light: #e9ecef;
-    --popup-radius: 16px;
-    --popup-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --popup-zalo-blue: #0068FF;
+  --popup-call-green: var(--tp-brand-primary-color);
+  --popup-text-dark: #212529;
+  --popup-text-light: #6c757d;
+  --popup-bg-light: #f8f9fa;
+  --popup-border-light: #e9ecef;
+  --popup-radius: 16px;
+  --popup-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
 }
 
 /* 1. Overlay */
 #callPopup.popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(4px); /* Modern blur effect */
-    -webkit-backdrop-filter: blur(4px);
-    display: none; /* Hidden by default */
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    padding: 16px; /* Add padding for small screens */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  /* Modern blur effect */
+  -webkit-backdrop-filter: blur(4px);
+  display: none;
+  /* Hidden by default */
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 16px;
+  /* Add padding for small screens */
 }
 
 /* 2. Content Box */
 #callPopup .popup-content {
-    background: #fff;
-    width: 90%;
-    max-width: 380px;
-    padding: 2.5rem 2rem; /* Increased padding */
-    border-radius: var(--popup-radius);
-    box-shadow: var(--popup-shadow);
-    position: relative;
-    text-align: center; /* Center-align all content */
-    animation: popupAnimate 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background: #fff;
+  width: 90%;
+  max-width: 380px;
+  padding: 2.5rem 2rem;
+  /* Increased padding */
+  border-radius: var(--popup-radius);
+  box-shadow: var(--popup-shadow);
+  position: relative;
+  text-align: center;
+  /* Center-align all content */
+  animation: popupAnimate 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
 /* 3. Header: Icon, Title, Subtext */
 #callPopup .popup-icon {
-    font-size: 2.5rem;
-    color: var(--popup-zalo-blue); /* Use a primary color */
-    margin-bottom: 1rem;
+  font-size: 2.5rem;
+  color: var(--popup-zalo-blue);
+  /* Use a primary color */
+  margin-bottom: 1rem;
 }
 
 #callPopup .popup-content h3 {
-    font-size: 1.5rem; /* Larger title */
-    font-weight: 700;
-    color: var(--popup-text-dark);
-    margin: 0 0 8px 0; /* Tighter margin */
+  font-size: 1.5rem;
+  /* Larger title */
+  font-weight: 700;
+  color: var(--popup-text-dark);
+  margin: 0 0 8px 0;
+  /* Tighter margin */
 }
 
 #callPopup .popup-subtext {
-    font-size: 0.95rem;
-    color: var(--popup-text-light);
-    margin-bottom: 2rem; /* Space before buttons */
+  font-size: 0.95rem;
+  color: var(--popup-text-light);
+  margin-bottom: 2rem;
+  /* Space before buttons */
 }
 
 /* 4. Button Group */
 #callPopup .button-group {
-    display: flex;
-    flex-direction: column;
-    gap: 12px; /* Replaces margin-bottom on buttons */
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* Replaces margin-bottom on buttons */
 }
 
 #callPopup button {
-    display: flex; /* To align icon and text */
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    padding: 14px 20px; /* Taller buttons */
-    border-radius: 12px;
-    border: none;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    margin: 10px;
+  display: flex;
+  /* To align icon and text */
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 14px 20px;
+  /* Taller buttons */
+  border-radius: 12px;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin: 10px;
 }
 
 /* Add icons to buttons */
 #callPopup button i {
-    margin-right: 10px;
-    font-size: 1.1rem;
+  margin-right: 10px;
+  font-size: 1.1rem;
 }
 
 #callPopup button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 /* Call button (Green for 'go') */
 #callOption {
-    background-color: var(--popup-call-green);
-    color: white;
+  background-color: var(--popup-call-green);
+  color: white;
 }
+
 #callOption:hover {
-    background-color: var(--tp-brand-primary-color);
+  background-color: var(--tp-brand-primary-color);
 }
 
 /* Zalo button (Official Zalo Blue) */
 #zaloOption {
-    background-color: var(--popup-zalo-blue);
-    color: white;
+  background-color: var(--popup-zalo-blue);
+  color: white;
 }
+
 #zaloOption:hover {
-    background-color: #0058d6;
+  background-color: #0058d6;
 }
 
 /* 5. Close Icon Button */
 #callPopup .popup-close {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    color: var(--popup-text-light);
-    background-color: var(--popup-bg-light);
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: var(--popup-text-light);
+  background-color: var(--popup-bg-light);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
 #callPopup .popup-close:hover {
-    color: var(--popup-text-dark);
-    background-color: var(--popup-border-light);
-    transform: rotate(90deg);
+  color: var(--popup-text-dark);
+  background-color: var(--popup-border-light);
+  transform: rotate(90deg);
 }
 
 /* 6. Animation */
 @keyframes popupAnimate {
-    from {
-        opacity: 0;
-        transform: translateY(20px) scale(0.98);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* ========================================
@@ -465,113 +506,115 @@
 
 /* Search Area Container */
 .tp-search-area {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.85);
-    backdrop-filter: blur(10px);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tp-search-area.open {
-    opacity: 1;
-    visibility: visible;
+  opacity: 1;
+  visibility: visible;
 }
 
 /* Close Button */
 .tp-search-close {
-    position: absolute;
-    top: 30px;
-    right: 30px;
-    z-index: 10;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  z-index: 10;
 }
 
 .tp-search-close-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .tp-search-close-btn:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: rotate(90deg);
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
 }
 
 /* Search Content */
 .tp-search-content {
-    animation: searchSlideUp 0.5s ease;
+  animation: searchSlideUp 0.5s ease;
 }
 
 @keyframes searchSlideUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .tp-search-title {
-    font-size: 32px;
-    font-weight: 700;
-    color: #fff;
-    text-align: center;
-    margin-bottom: 40px;
-    letter-spacing: -0.5px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 40px;
+  letter-spacing: -0.5px;
 }
 
 /* Search Form */
 .tp-search-form-wrapper {
-    position: relative;
+  position: relative;
 }
 
 .tp-search-input-box {
-    background: #fff;
-    border-radius: 60px;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+  background: #fff;
+  border-radius: 60px;
+  overflow: visible;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
 }
 
 .tp-search-input-box:focus-within {
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
-    transform: translateY(-2px);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
 }
 
 
 
 .tp-search-input {
-    width: 100%;
-    height: 70px;
-    padding: 0 80px 0 35px;
-    border: none;
-    font-size: 16px;
-    font-weight: 400;
-    color: #333;
-    background: transparent;
-    outline: none;
-    font-family: var(--tp-ff-inter);
+  width: 100%;
+  height: 70px;
+  padding: 0 80px 0 35px;
+  border: none;
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+  background: transparent;
+  outline: none;
+  font-family: var(--tp-ff-inter);
 }
 
-.tp-search-input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+.tp-search-input::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: #333;
   opacity: 1;
   font-family: var(--tp-ff-inter);
@@ -579,126 +622,275 @@
 }
 
 .tp-search-input::placeholder {
-    color: #999;
+  color: #999;
 }
 
 .tp-search-submit-btn {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 54px;
-    height: 54px;
-    border-radius: 50%;
-    background: var(--tp-brand-primary-color);
-    border: none;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--tp-brand-primary-color);
+  border: none;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .tp-search-submit-btn:hover {
-    background: var(--tp-secondary-color);
-    transform: translateY(-50%) scale(1.05);
+  background: var(--tp-secondary-color);
+  transform: translateY(-50%) scale(1.05);
 }
 
 .tp-search-submit-btn svg {
-    width: 20px;
-    height: 20px;
+  width: 20px;
+  height: 20px;
 }
 
 /* Search Hints */
 .tp-search-hint {
-    text-align: center;
-    margin-top: 30px;
+  text-align: center;
+  margin-top: 30px;
 }
 
 .tp-search-hint p {
-    color: rgba(255, 255, 255, 0.7);
-    font-size: 14px;
-    margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+  margin: 0;
 }
 
 .tp-search-keyword {
-    display: inline-block;
-    padding: 4px 12px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    color: #fff;
-    margin: 0 5px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+  display: inline-block;
+  padding: 4px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  color: #fff;
+  margin: 0 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .tp-search-keyword:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
 }
 
 /* Autocomplete Dropdown Adjustments */
 #header-autocomplete-dropdown {
-    margin-top: 15px;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  margin-top: 15px;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-    .tp-search-close {
-        top: 20px;
-        right: 20px;
-    }
-    
-    .tp-search-close-btn {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .tp-search-title {
-        font-size: 24px;
-        margin-bottom: 30px;
-    }
-    
-    .tp-search-input {
-        height: 60px;
-        font-size: 15px;
-        padding: 0 70px 0 25px;
-    }
-    
-    .tp-search-submit-btn {
-        width: 48px;
-        height: 48px;
-    }
-    
-    .tp-search-hint {
-        margin-top: 20px;
-    }
-    
-    .tp-search-keyword {
-        font-size: 13px;
-        padding: 3px 10px;
-    }
+  .tp-search-close {
+    top: 20px;
+    right: 20px;
+  }
+
+  .tp-search-close-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .tp-search-title {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+  .tp-search-input {
+    height: 60px;
+    font-size: 15px;
+    padding: 0 70px 0 25px;
+  }
+
+  .tp-search-submit-btn {
+    width: 48px;
+    height: 48px;
+  }
+
+  .tp-search-hint {
+    margin-top: 20px;
+  }
+
+  .tp-search-keyword {
+    font-size: 13px;
+    padding: 3px 10px;
+  }
 }
 
 @media (max-width: 480px) {
-    .tp-search-title {
-        font-size: 20px;
-    }
-    
-    .tp-search-input {
-        height: 55px;
-        font-size: 14px;
-        padding: 0 65px 0 20px;
-    }
-    
-    .tp-search-submit-btn {
-        width: 44px;
-        height: 44px;
-    }
+  .tp-search-title {
+    font-size: 20px;
+  }
+
+  .tp-search-input {
+    height: 55px;
+    font-size: 14px;
+    padding: 0 65px 0 20px;
+  }
+
+  .tp-search-submit-btn {
+    width: 44px;
+    height: 44px;
+  }
 }
 
+/* ========================================
+   AUTOCOMPLETE SEARCH STYLES
+   ======================================== */
 
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  margin-top: 5px;
+  max-height: 450px;
+  overflow-y: auto;
+}
+
+.autocomplete-list {
+  padding: 8px 0;
+}
+
+.autocomplete-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-bottom: 1px solid #f5f5f5;
+  text-decoration: none;
+}
+
+.autocomplete-item:last-child {
+  border-bottom: none;
+}
+
+.autocomplete-item:hover {
+  background: #f8f9fa;
+  text-decoration: none;
+}
+
+.autocomplete-item-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-right: 15px;
+  flex-shrink: 0;
+}
+
+.autocomplete-item-info {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+
+.autocomplete-item-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.autocomplete-item-meta {
+  display: flex;
+  gap: 10px;
+  font-size: 13px;
+  color: #666;
+}
+
+.autocomplete-item-sku {
+  color: #888;
+}
+
+.autocomplete-item-brand {
+  color: #0066cc;
+  font-weight: 500;
+}
+
+.autocomplete-view-all {
+  display: block;
+  padding: 12px 15px;
+  text-align: center;
+  background: #f8f9fa;
+  color: #0066cc;
+  font-weight: 600;
+  font-size: 14px;
+  border-top: 1px solid #e0e0e0;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-decoration: none;
+}
+
+.autocomplete-view-all:hover {
+  background: #e9ecef;
+  text-decoration: none;
+}
+
+.autocomplete-no-results {
+  padding: 20px;
+  text-align: center;
+  color: #999;
+  font-size: 14px;
+}
+
+.autocomplete-loading {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+}
+
+/* Autocomplete Scrollbar styling */
+.autocomplete-dropdown::-webkit-scrollbar {
+  width: 8px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.autocomplete-dropdown::-webkit-scrollbar-thumb:hover {
+  background: #999;
+}
+
+/* Autocomplete responsive */
+@media (max-width: 575px) {
+  .autocomplete-dropdown {
+    font-size: 12px;
+  }
+
+  .autocomplete-item-image {
+    width: 45px;
+    height: 45px;
+    margin-right: 12px;
+  }
+
+  .autocomplete-item-name {
+    font-size: 13px;
+  }
+}

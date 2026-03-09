@@ -21,6 +21,8 @@ class SetLocale
         \Illuminate\Support\Facades\URL::defaults(['locale' => $locale]);
         App::setLocale($locale);
 
+        $request->route()->forgetParameter('locale');
+
         return $next($request);
     }
 }

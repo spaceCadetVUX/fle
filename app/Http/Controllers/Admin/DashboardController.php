@@ -963,8 +963,15 @@ class DashboardController extends Controller
             return back()->with('error', 'Cannot delete category with subcategories. Please delete or reassign subcategories first.');
         }
 
-        $category->delete();
-        
+        // Permanently remove pivot relations then force delete the category
+        \DB::transaction(function() use ($category) {
+            // Detach any pivoted products (should be none due to the check above, but ensure cleanup)
+            $category->products()->detach();
+
+            // Force delete to remove the row from database (Model uses SoftDeletes)
+            $category->forceDelete();
+        });
+
         return redirect()->route('admin.categories')->with('success', 'Category deleted successfully!');
     }
 

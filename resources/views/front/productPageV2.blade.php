@@ -56,17 +56,31 @@
             <div class="offcanvas-body flex-column px-4 px-lg-0 pb-4">
                 <h5 class="fw-bold mb-4 fs-6 d-none d-lg-block">Filters</h5>
 
-                <!-- Size -->
+                <!-- Size (dynamic from categories) -->
+                @php
+                    $sizeCategory = null;
+                    if (isset($categories) && $categories instanceof \Illuminate\Support\Collection) {
+                        $sizeCategory = $categories->firstWhere('slug', 'size') ?: $categories->firstWhere('name', 'Size');
+                    }
+                @endphp
+
+                @if($sizeCategory && $sizeCategory->children && $sizeCategory->children->count())
                 <div class="filter-group mb-4">
-                    <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">Size</h6>
+                    <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">{{ $sizeCategory->name }}</h6>
                     <div class="d-flex flex-wrap gap-2 size-filters">
-                        <button class="size-btn">S</button>
-                        <button class="size-btn">M</button>
-                        <button class="size-btn">L</button>
-                        <button class="size-btn">XL</button>
-                        <button class="size-btn d-none">XXL</button>
+                        @foreach($sizeCategory->children as $child)
+                            @php
+                                $selectedSlugs = array_filter(array_map('trim', explode(',', request()->get('category', ''))));
+                                $isActive = in_array($child->slug, $selectedSlugs);
+                                // Build URL that toggles this child as the only selected category (simple behaviour)
+                                $url = request()->fullUrlWithQuery(['category' => $child->slug]);
+                            @endphp
+
+                            <a href="{{ $url }}" class="size-btn{{ $isActive ? ' active' : '' }}">{{ $child->name }}</a>
+                        @endforeach
                     </div>
                 </div>
+                @endif
 
                 <!-- Color -->
                 <div class="filter-group mb-4">

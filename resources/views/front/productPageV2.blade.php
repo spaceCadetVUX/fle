@@ -15,6 +15,12 @@
 
 @section('content')
 
+@push('head')
+@if(!empty($canonicalUrl))
+    <link rel="canonical" href="{{ $canonicalUrl }}">
+@endif
+@endpush
+
 {{-- ==========================================
          SHOP HERO
     ========================================== --}}

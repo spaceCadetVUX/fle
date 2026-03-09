@@ -44,7 +44,7 @@ Route::prefix('vi')->name('vi.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/category/{category}', 'byCategory')->name('category');
         Route::get('/search', 'search')->name('search');
-        // Resolve slug: product detail or category listing (handled in controller)
+        // Resolve slug to either category listing or product detail (ProductController@resolve)
         Route::get('/{slug}', 'resolve')->name('show');
     });
 
@@ -52,7 +52,8 @@ Route::prefix('vi')->name('vi.')->group(function () {
     Route::controller(ProjectController::class)->prefix('du-an')->name('projects.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/danh-muc/{category}', 'byCategory')->name('category');
-        Route::get('/{slug}', 'show')->name('show');
+        // Resolve slug to either category listing or product detail (ProductController@resolve)
+        Route::get('/{slug}', 'resolve')->name('show');
     });
 
     // PRODUCTS
@@ -66,7 +67,7 @@ Route::prefix('vi')->name('vi.')->group(function () {
         Route::get('/autocomplete', 'autocomplete')->name('autocomplete');
         Route::get('/brand/{brand}', 'byBrand')->name('brand');
 
-        Route::get('/{slug}', 'show')->name('show');
+        Route::get('/{slug}', 'resolve')->name('show');
     });
 
 
@@ -108,7 +109,7 @@ Route::prefix('en')->name('en.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/category/{category}', 'byCategory')->name('category');
         Route::get('/search', 'search')->name('search');
-        Route::get('/{slug}', 'show')->name('show');
+        Route::get('/{slug}', 'resolve')->name('show');
     });
 
     // PROJECTS

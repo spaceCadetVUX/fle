@@ -62,10 +62,9 @@
             <div class="offcanvas-body flex-column px-4 px-lg-0 pb-4">
                 <h5 class="fw-bold mb-4 fs-6 d-none d-lg-block">Filters</h5>
 
-                <!-- Size (dynamic from categories) - rendered as checkboxes but styled as size buttons -->
+                <!-- Size (dynamic from categories) -->
                 @php
                     $sizeCategory = null;
-                    $selectedSlugs = array_filter(array_map('trim', explode(',', request()->get('category', ''))));
                     if (isset($categories) && $categories instanceof \Illuminate\Support\Collection) {
                         $sizeCategory = $categories->firstWhere('slug', 'size') ?: $categories->firstWhere('name', 'Size');
                     }
@@ -77,12 +76,13 @@
                     <div class="d-flex flex-wrap gap-2 size-filters">
                         @foreach($sizeCategory->children as $child)
                             @php
-                                $isChecked = in_array($child->slug, $selectedSlugs);
+                                $selectedSlugs = array_filter(array_map('trim', explode(',', request()->get('category', ''))));
+                                $isActive = in_array($child->slug, $selectedSlugs);
+                                // Build URL that toggles this child as the only selected category (simple behaviour)
+                                $url = request()->fullUrlWithQuery(['category' => $child->slug]);
                             @endphp
-                            <div>
-                                <input class="category-checkbox visually-hidden" type="checkbox" id="size-{{ $child->id }}" data-slug="{{ $child->slug }}" {{ $isChecked ? 'checked' : '' }}>
-                                <label for="size-{{ $child->id }}" class="size-btn{{ $isChecked ? ' active' : '' }}">{{ $child->name }}</label>
-                            </div>
+
+                            <a href="{{ $url }}" class="size-btn{{ $isActive ? ' active' : '' }}">{{ $child->name }}</a>
                         @endforeach
                     </div>
                 </div>
@@ -101,33 +101,67 @@
                     </div>
                 </div>
 
-                <!-- Categories (render root categories as labels; children as checkboxes) -->
+                <!-- Price -->
+                <div class="filter-group mb-4">
+                    <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">Prices</h6>
+                    <div class="form-check filter-check">
+                        <input class="form-check-input" type="checkbox" id="price1">
+                        <label class="form-check-label" for="price1">$0.00 - $15.00</label>
+                    </div>
+                    <div class="form-check filter-check">
+                        <input class="form-check-input" type="checkbox" id="price2" checked>
+                        <label class="form-check-label" for="price2">$15.00 - $20.00</label>
+                    </div>
+                    <div class="form-check filter-check">
+                        <input class="form-check-input" type="checkbox" id="price3">
+                        <label class="form-check-label" for="price3">$20.00 - $35.00</label>
+                    </div>
+                    <div class="form-check filter-check">
+                        <input class="form-check-input" type="checkbox" id="price4">
+                        <label class="form-check-label" for="price4">$35.00 - $50.00</label>
+                    </div>
+                </div>
+
+                <!-- Brands -->
+                <div class="filter-group mb-4">
+                    <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">Brands</h6>
+                    <div class="form-check filter-check">
+                        <input class="form-check-input" type="checkbox" id="brand1">
+                        <label class="form-check-label" for="brand1">Mango</label>
+                    </div>
+                    <div class="form-check filter-check">
+                        <input class="form-check-input" type="checkbox" id="brand2">
+                        <label class="form-check-label" for="brand2">Zara</label>
+                    </div>
+                    <div class="form-check filter-check">
+                        <input class="form-check-input" type="checkbox" id="brand3" checked>
+                        <label class="form-check-label" for="brand3">H&amp;M</label>
+                    </div>
+                    <div class="form-check filter-check">
+                        <input class="form-check-input" type="checkbox" id="brand4">
+                        <label class="form-check-label" for="brand4">Pull&amp;Bear</label>
+                    </div>
+                </div>
+
+                <!-- Categories -->
                 <div class="filter-group mb-4">
                     <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">Categories</h6>
-                    @php
-                        $selectedSlugs = array_filter(array_map('trim', explode(',', request()->get('category', ''))));
-                    @endphp
-
-                    @if(isset($categories) && $categories->count())
-                        @foreach($categories as $parent)
-                            @if(isset($sizeCategory) && $sizeCategory && $parent->id == $sizeCategory->id)
-                                @continue
-                            @endif
-                            <div class="mb-2">
-                                <div class="fw-bold">{{ $parent->name }}</div>
-                                @if($parent->children && $parent->children->count())
-                                    @foreach($parent->children as $child)
-                                        <div class="form-check filter-check">
-                                            <input class="form-check-input category-checkbox" type="checkbox" id="cat-{{ $child->id }}" data-slug="{{ $child->slug }}" {{ in_array($child->slug, $selectedSlugs) ? 'checked' : '' }}>
-                                            <label class="form-check-label" for="cat-{{ $child->id }}">{{ $child->name }}</label>
-                                        </div>
-                                    @endforeach
-                                @endif
-                            </div>
-                        @endforeach
-                    @else
-                        <div class="text-muted">No categories found.</div>
-                    @endif
+                    <div class="form-check filter-check">
+                        <input class="form-check-input" type="checkbox" id="cat1" checked>
+                        <label class="form-check-label" for="cat1">Women</label>
+                    </div>
+                    <div class="form-check filter-check">
+                        <input class="form-check-input" type="checkbox" id="cat2">
+                        <label class="form-check-label" for="cat2">Men</label>
+                    </div>
+                    <div class="form-check filter-check">
+                        <input class="form-check-input" type="checkbox" id="cat3">
+                        <label class="form-check-label" for="cat3">Accessories</label>
+                    </div>
+                    <div class="form-check filter-check">
+                        <input class="form-check-input" type="checkbox" id="cat4">
+                        <label class="form-check-label" for="cat4">Kids</label>
+                    </div>
                 </div>
 
                 <!-- Tags -->
@@ -190,48 +224,5 @@
         </main>
     </div>
 </div>
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    function buildSelectedSlugs() {
-        return Array.from(document.querySelectorAll('.category-checkbox:checked')).map(function (el) { return el.dataset.slug; });
-    }
-
-    function applyCategoryFilters() {
-        var checked = buildSelectedSlugs();
-        var params = new URLSearchParams(window.location.search);
-        if (checked.length) {
-            params.set('category', checked.join(','));
-        } else {
-            params.delete('category');
-        }
-        var newSearch = params.toString();
-        var newUrl = window.location.pathname + (newSearch ? ('?' + newSearch) : '');
-        window.location.href = newUrl;
-    }
-
-    // Apply button: collect checked category slugs and reload with param
-    var applyBtn = document.getElementById('applyFiltersBtn');
-    if (applyBtn) {
-        applyBtn.addEventListener('click', function () {
-            applyCategoryFilters();
-        });
-    }
-
-    // Clear All: uncheck category boxes and remove category param
-    var clearBtn = document.getElementById('clearFiltersBtn');
-    if (clearBtn) {
-        clearBtn.addEventListener('click', function () {
-            document.querySelectorAll('.category-checkbox').forEach(function (el) { el.checked = false; });
-            var params = new URLSearchParams(window.location.search);
-            params.delete('category');
-            var newSearch = params.toString();
-            var newUrl = window.location.pathname + (newSearch ? ('?' + newSearch) : '');
-            window.location.href = newUrl;
-        });
-    }
-});
-</script>
-@endpush
 
 @endsection

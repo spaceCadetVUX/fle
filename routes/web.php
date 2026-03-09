@@ -44,7 +44,8 @@ Route::prefix('vi')->name('vi.')->group(function () {
         Route::get('/', 'index')->name('index');
         Route::get('/category/{category}', 'byCategory')->name('category');
         Route::get('/search', 'search')->name('search');
-        Route::get('/{slug}', 'show')->name('show');
+        // Resolve slug: product detail or category listing (handled in controller)
+        Route::get('/{slug}', 'resolve')->name('show');
     });
 
     // PROJECTS

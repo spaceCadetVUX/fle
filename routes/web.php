@@ -66,7 +66,7 @@ Route::prefix('vi')->name('vi.')->group(function () {
         Route::get('/search', 'search')->name('search');
         Route::get('/autocomplete', 'autocomplete')->name('autocomplete');
         Route::get('/brand/{brand}', 'byBrand')->name('brand');
-        Route::get('/danh-muc/{category}', 'byCategory')->name('category');
+        Route::get('/danh-muc', 'byCategory')->name('category');
 
         Route::get('/{slug}', 'show')->name('show');
     });
@@ -130,7 +130,7 @@ Route::prefix('en')->name('en.')->group(function () {
         Route::get('/search', 'search')->name('search');
         Route::get('/autocomplete', 'autocomplete')->name('autocomplete');
         Route::get('/brand/{brand}', 'byBrand')->name('brand');
-        Route::get('/category/{category}', 'byCategory')->name('category');
+        Route::get('/category', 'byCategory')->name('category');
 
         Route::get('/{slug}', 'show')->name('show');
     });

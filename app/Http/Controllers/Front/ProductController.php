@@ -166,27 +166,57 @@ class ProductController extends Controller
     }
 
     /**
-     * Display products by category (SEO-friendly path-based URL)
+     * Display products filtered by category.
+     * URL format: /danh-muc?brand=zara,hm&size=m,xxl
+     * Each query-param key = parent category slug, value = comma-separated child slugs.
      */
-    public function byCategory(Request $request, $categorySlug)
+    public function byCategory(Request $request)
     {
-        // Find the category by slug
-        $activeCategory = \App\Models\Category::where('slug', $categorySlug)
+        // Load all root categories with their children to resolve query params
+        $rootCategories = \App\Models\Category::whereNull('parent_id')
             ->where('status', 1)
-            ->with('children', 'parent')
-            ->firstOrFail();
+            ->with(['children' => function ($q) {
+                $q->where('status', 1)->orderBy('order');
+            }])
+            ->orderBy('order')
+            ->get();
 
-        // Collect this category and all its children IDs
-        $categoryIds = [$activeCategory->id];
-        if ($activeCategory->children && $activeCategory->children->count() > 0) {
-            $categoryIds = array_merge($categoryIds, $activeCategory->children->pluck('id')->toArray());
+        $categoryIds  = [];   // IDs to filter products by
+        $activeSlugs  = [];   // flat list of active child slugs (for sidebar checked state)
+        $activeFilters = [];  // ['brand' => ['zara', 'hm'], 'size' => ['m']] (for breadcrumb)
+
+        foreach ($rootCategories as $parent) {
+            $paramValue = $request->get($parent->slug, '');
+            if (empty($paramValue)) {
+                continue;
+            }
+
+            // Split comma-separated child slugs from the query param
+            $childSlugs = array_values(array_filter(array_map('trim', explode(',', $paramValue))));
+            if (empty($childSlugs)) {
+                continue;
+            }
+
+            $activeFilters[$parent->slug] = $childSlugs;
+            $activeSlugs = array_merge($activeSlugs, $childSlugs);
+
+            // Resolve to category IDs (match against actual children of this parent)
+            foreach ($parent->children as $child) {
+                if (in_array($child->slug, $childSlugs)) {
+                    $categoryIds[] = $child->id;
+                }
+            }
         }
 
-        $query = Product::published()
-            ->with('categories')
-            ->whereHas('categories', function ($q) use ($categoryIds) {
+        $categoryIds = array_values(array_unique(array_map('intval', $categoryIds)));
+
+        $query = Product::published()->with('categories');
+
+        if (!empty($categoryIds)) {
+            $query->whereHas('categories', function ($q) use ($categoryIds) {
                 $q->whereIn('categories.id', $categoryIds);
             });
+        }
 
         // Sorting
         $sort = $request->get('sort', 'newest');
@@ -209,21 +239,14 @@ class ProductController extends Controller
 
         $products = $query->paginate(12)->withQueryString();
 
-        // Get all active brands for the filter sidebar
-        $brands = \App\Models\Brand::where('status', 1)
-            ->orderBy('name')
-            ->get();
+        $brands = \App\Models\Brand::where('status', 1)->orderBy('name')->get();
 
-        // Get all active categories (hierarchical)
-        $categories = \App\Models\Category::whereNull('parent_id')
-            ->where('status', 1)
-            ->with(['children' => function ($q) {
-                $q->where('status', 1)->orderBy('order');
-            }])
-            ->orderBy('order')
-            ->get();
+        // $rootCategories is also used as the sidebar $categories
+        $categories = $rootCategories;
 
-        return view('front.productPageV2', compact('products', 'brands', 'categories', 'activeCategory'));
+        return view('front.productPageV2', compact(
+            'products', 'brands', 'categories', 'activeSlugs', 'activeFilters'
+        ));
     }
 
     /**

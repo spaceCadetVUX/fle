@@ -41,8 +41,27 @@
     <h2 class="fw-bold fs-3 mb-2">Summer collection</h2>
     <p class="text-muted text-uppercase mb-0" style="font-size: 0.75rem; letter-spacing: 0.25em;">
         Home <span class="mx-1">&gt;</span> Shop
-        @if(isset($activeCategory))
-            <span class="mx-1">&gt;</span> {{ $activeCategory->name }}
+        @if(isset($activeSlugs) && count($activeSlugs))
+            @php
+                // Resolve names from the already-loaded $categories tree
+                $breadcrumbNames = [];
+                if (isset($categories)) {
+                    foreach ($categories as $parent) {
+                        if (in_array($parent->slug, $activeSlugs)) {
+                            $breadcrumbNames[] = $parent->name;
+                        }
+                        if ($parent->children) {
+                            foreach ($parent->children as $child) {
+                                if (in_array($child->slug, $activeSlugs)) {
+                                    $breadcrumbNames[] = $child->name;
+                                }
+                            }
+                        }
+                    }
+                }
+                $breadcrumbNames = $breadcrumbNames ?: $activeSlugs;
+            @endphp
+            <span class="mx-1">&gt;</span> {{ implode(', ', $breadcrumbNames) }}
         @endif
     </p>
 </div>
@@ -61,31 +80,19 @@
                 <h5 class="fw-bold mb-4 fs-6 d-none d-lg-block">Filters</h5>
 
                 {{-- -------------------------------------------------------
-                     Determine active slugs:
-                     • Path-based route (/danh-muc/{slug}) → $activeCategory
-                     • Query param (?category[]=slug)      → array format
-                     • Legacy query param (?category=slug1,slug2) → comma string
+                     Determine active child slugs:
+                     $activeSlugs is injected by byCategory() controller when
+                     the user is on /danh-muc?brand=zara,hm&size=m
+                     On the main shop index, $activeSlugs is not set → no filters.
                      ------------------------------------------------------- --}}
                 @php
-                    $activeCategorySlug = isset($activeCategory) ? $activeCategory->slug : null;
+                    // $activeSlugs is set by byCategory controller (flat array of selected child slugs)
+                    // On the shop index page it's not set — read nothing (no filter active)
+                    $selectedSlugs = isset($activeSlugs) && is_array($activeSlugs) ? $activeSlugs : [];
 
-                    $querySlugs = request()->input('category', []);
-                    if (is_string($querySlugs)) {
-                        // Legacy comma-separated fallback
-                        $querySlugs = array_filter(array_map('trim', explode(',', $querySlugs)));
-                    }
-                    if (!is_array($querySlugs)) {
-                        $querySlugs = [];
-                    }
-
-                    $selectedSlugs = array_values(array_unique(
-                        array_filter(array_merge(
-                            $activeCategorySlug ? [$activeCategorySlug] : [],
-                            $querySlugs
-                        ))
-                    ));
-
-                    // Base shop URL — always the clean shop index (no filter path)
+                    // The fixed category filter page URL (no wildcard)
+                    $categoryPageUrl = route(current_locale() . '.product.category');
+                    // Base shop URL for Clear All
                     $shopBaseUrl = route(current_locale() . '.product.shop');
                 @endphp
 
@@ -108,7 +115,7 @@
                                     type="checkbox"
                                     id="size-{{ $child->id }}"
                                     data-slug="{{ $child->slug }}"
-                                    data-category-url="{{ route(current_locale() . '.product.category', $child->slug) }}"
+                                    data-parent-slug="{{ $sizeCategory->slug }}"
                                     {{ $isChecked ? 'checked' : '' }}>
                                 <label for="size-{{ $child->id }}" class="size-btn{{ $isChecked ? ' active' : '' }}">{{ $child->name }}</label>
                             </div>
@@ -146,7 +153,7 @@
                                                 type="checkbox"
                                                 id="cat-{{ $child->id }}"
                                                 data-slug="{{ $child->slug }}"
-                                                data-category-url="{{ route(current_locale() . '.product.category', $child->slug) }}"
+                                                data-parent-slug="{{ $parent->slug }}"
                                                 {{ $isChecked ? 'checked' : '' }}>
                                             <label class="form-check-label" for="cat-{{ $child->id }}">{{ $child->name }}</label>
                                         </div>
@@ -223,62 +230,63 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    var shopBaseUrl = '{{ $shopBaseUrl }}';
+    var shopBaseUrl    = '{{ $shopBaseUrl }}';
+    var categoryPageUrl = '{{ $categoryPageUrl }}';
 
     /**
-     * Collect checked category data (slug + dedicated SEO URL)
+     * Collect all checked checkboxes, grouped by their parent category slug.
+     * Returns: { brand: ['zara', 'hm'], size: ['m', 'xxl'] }
      */
-    function getCheckedData() {
-        return Array.from(document.querySelectorAll('.category-checkbox:checked')).map(function (el) {
-            return {
-                slug: el.dataset.slug,
-                categoryUrl: el.dataset.categoryUrl || null
-            };
+    function getCheckedGroups() {
+        var groups = {};
+        document.querySelectorAll('.category-checkbox:checked').forEach(function (el) {
+            var parentSlug = el.dataset.parentSlug;
+            var slug = el.dataset.slug;
+            if (!parentSlug || !slug) return;
+            if (!groups[parentSlug]) groups[parentSlug] = [];
+            groups[parentSlug].push(slug);
         });
+        return groups;
     }
 
     /**
-     * Build SEO-friendly filter URL:
-     *   0 selected  → base shop URL  (e.g. /vi/san-pham)
-     *   1 selected  → clean path URL (e.g. /vi/san-pham/danh-muc/ao-thun)
-     *   2+ selected → ?category[]=slug1&category[]=slug2 on base shop URL
+     * Build the SEO-friendly filter URL:
+     *   nothing selected → /vi/san-pham  (base shop)
+     *   filters selected → /vi/san-pham/danh-muc?brand=zara,hm&size=m,xxl
      */
-    function buildFilterUrl(checkedData) {
-        if (checkedData.length === 0) {
+    function buildFilterUrl(groups) {
+        if (Object.keys(groups).length === 0) {
             return shopBaseUrl;
         }
 
-        // Preserve any non-category query params already on the page (e.g. sort)
+        // Preserve non-filter params already in the URL (e.g. sort)
         var existingParams = new URLSearchParams(window.location.search);
-        existingParams.delete('category');
-        existingParams.delete('category[]');
 
-        if (checkedData.length === 1 && checkedData[0].categoryUrl) {
-            // Single category → clean SEO path
-            var remaining = existingParams.toString();
-            return checkedData[0].categoryUrl + (remaining ? '?' + remaining : '');
-        }
-
-        // Multiple categories → array query params on the base shop URL
+        // Build fresh params: one key per parent slug, comma-joined children as value
         var params = new URLSearchParams();
+        Object.keys(groups).forEach(function (parentSlug) {
+            // Remove single param keys that we own (in case we reload from /danh-muc?brand=...)
+            existingParams.delete(parentSlug);
+            params.set(parentSlug, groups[parentSlug].join(','));
+        });
+
+        // Reattach any remaining unrelated params (e.g. sort)
         existingParams.forEach(function (val, key) {
             params.append(key, val);
         });
-        checkedData.forEach(function (item) {
-            params.append('category[]', item.slug);
-        });
-        return shopBaseUrl + '?' + params.toString();
+
+        return categoryPageUrl + '?' + params.toString();
     }
 
-    // Apply button
+    // Apply Filters button
     var applyBtn = document.getElementById('applyFiltersBtn');
     if (applyBtn) {
         applyBtn.addEventListener('click', function () {
-            window.location.href = buildFilterUrl(getCheckedData());
+            window.location.href = buildFilterUrl(getCheckedGroups());
         });
     }
 
-    // Clear All → always navigate back to the base shop URL
+    // Clear All → go back to base shop (no filters)
     var clearBtn = document.getElementById('clearFiltersBtn');
     if (clearBtn) {
         clearBtn.addEventListener('click', function () {

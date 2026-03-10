@@ -15,7 +15,7 @@
                 </a>
                 {{-- Color root category — pre-fills type=color in create form --}}
                 <a href="{{ route('admin.categories.create', ['type' => 'color']) }}"
-                   class="inline-flex items-center px-4 py-2 bg-pink-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-pink-700">
+                   class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700">
                     🎨 Add Color Category
                 </a>
                 <button type="button" onclick="document.getElementById('reorderModal').classList.remove('hidden')"

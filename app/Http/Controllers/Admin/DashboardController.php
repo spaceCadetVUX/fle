@@ -885,21 +885,25 @@ class DashboardController extends Controller
     public function storeCategory(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name',
-            'description' => 'nullable|string',
-            'parent_id' => 'nullable|exists:categories,id',
-            'status' => 'nullable|boolean',
-            'display_on_home' => 'nullable|boolean',
-            'order' => 'nullable|integer|min:0',
+            'name'           => 'required|string|max:255|unique:categories,name',
+            'description'    => 'nullable|string',
+            'parent_id'      => 'nullable|exists:categories,id',
+            'status'         => 'nullable|boolean',
+            'display_on_home'=> 'nullable|boolean',
+            'order'          => 'nullable|integer|min:0',
+            'type'           => 'nullable|in:default,color,size',
+            'color_code'     => 'nullable|string|max:30',
         ]);
 
-        $validated['slug'] = \Illuminate\Support\Str::slug($request->name);
-        $validated['status'] = $request->has('status') ? 1 : 0;
+        $validated['slug']            = \Illuminate\Support\Str::slug($request->name);
+        $validated['status']          = $request->has('status') ? 1 : 0;
         $validated['display_on_home'] = $request->has('display_on_home') ? 1 : 0;
-        $validated['order'] = $request->order ?? 0;
-        
+        $validated['order']           = $request->order ?? 0;
+        $validated['type']            = $request->input('type', 'default');
+        $validated['color_code']      = $request->input('color_code') ?: null;
+
         \App\Models\Category::create($validated);
-        
+
         return redirect()->route('admin.categories')->with('success', 'Category created successfully!');
     }
 
@@ -922,15 +926,16 @@ class DashboardController extends Controller
     public function updateCategory(Request $request, \App\Models\Category $category)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
-            'description' => 'nullable|string',
-            'parent_id' => 'nullable|exists:categories,id',
-            'status' => 'nullable|boolean',
-            'display_on_home' => 'nullable|boolean',
-            'order' => 'nullable|integer|min:0',
+            'name'           => 'required|string|max:255|unique:categories,name,' . $category->id,
+            'description'    => 'nullable|string',
+            'parent_id'      => 'nullable|exists:categories,id',
+            'status'         => 'nullable|boolean',
+            'display_on_home'=> 'nullable|boolean',
+            'order'          => 'nullable|integer|min:0',
+            'type'           => 'nullable|in:default,color,size',
+            'color_code'     => 'nullable|string|max:30',
         ]);
 
-        // Prevent setting self as parent
         if ($request->parent_id == $category->id) {
             return back()->withErrors(['parent_id' => 'A category cannot be its own parent.'])->withInput();
         }
@@ -938,13 +943,15 @@ class DashboardController extends Controller
         if ($request->name !== $category->name) {
             $validated['slug'] = \Illuminate\Support\Str::slug($request->name);
         }
-        
-        $validated['status'] = $request->has('status') ? 1 : 0;
+
+        $validated['status']          = $request->has('status') ? 1 : 0;
         $validated['display_on_home'] = $request->has('display_on_home') ? 1 : 0;
-        $validated['order'] = $request->order ?? 0;
-        
+        $validated['order']           = $request->order ?? 0;
+        $validated['type']            = $request->input('type', 'default');
+        $validated['color_code']      = $request->input('color_code') ?: null;
+
         $category->update($validated);
-        
+
         return redirect()->route('admin.categories')->with('success', 'Category updated successfully!');
     }
 

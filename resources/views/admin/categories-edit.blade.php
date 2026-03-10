@@ -40,11 +40,14 @@
 
                         <div>
                             <label class="block text-sm font-medium text-gray-700">Parent Category</label>
-                            <select name="parent_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                            <select name="parent_id" id="parent_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 <option value="">-- None (Root Category) --</option>
                                 @foreach($parentCategories ?? [] as $parent)
-                                    <option value="{{ $parent->id }}" {{ old('parent_id', $category->parent_id) == $parent->id ? 'selected' : '' }}>
+                                    <option value="{{ $parent->id }}"
+                                            data-type="{{ $parent->type }}"
+                                            {{ old('parent_id', $category->parent_id) == $parent->id ? 'selected' : '' }}>
                                         {{ $parent->name }}
+                                        @if($parent->type === 'color') 🎨 @endif
                                     </option>
                                 @endforeach
                             </select>
@@ -52,6 +55,37 @@
                             @if($category->children()->count() > 0)
                                 <p class="mt-1 text-xs text-amber-600">⚠ This category has {{ $category->children()->count() }} subcategories</p>
                             @endif
+                        </div>
+
+                        {{-- Category Type (root only) --}}
+                        <div id="type_field">
+                            <label class="block text-sm font-medium text-gray-700">Category Type</label>
+                            <select name="type" id="type_select" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="default" {{ old('type', $category->type ?? 'default') === 'default' ? 'selected' : '' }}>Default</option>
+                                <option value="color"   {{ old('type', $category->type ?? 'default') === 'color'   ? 'selected' : '' }}>🎨 Color Filter</option>
+                                <option value="size"    {{ old('type', $category->type ?? 'default') === 'size'    ? 'selected' : '' }}>📐 Size Filter</option>
+                            </select>
+                        </div>
+
+                        {{-- Color Code --}}
+                        <div id="color_code_field" style="display:none;">
+                            <label class="block text-sm font-medium text-gray-700">Color Code (hex or rgb)</label>
+                            <div class="mt-1 flex items-center gap-3">
+                                <input type="color" id="color_picker"
+                                       value="{{ old('color_code', $category->color_code && preg_match('/^#[0-9a-fA-F]{6}$/', $category->color_code) ? $category->color_code : '#000000') }}"
+                                       class="h-10 w-14 rounded cursor-pointer border border-gray-300 p-0.5">
+                                <input type="text" name="color_code" id="color_code_input"
+                                       value="{{ old('color_code', $category->color_code) }}"
+                                       placeholder="#2e2e2e or rgb(46,46,46)"
+                                       class="block flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 font-mono text-sm">
+                                @php
+                                    $previewBg = old('color_code', $category->color_code ?? '#cccccc');
+                                @endphp
+                                <div id="color_preview" class="w-10 h-10 rounded-full border border-gray-300 flex-shrink-0"
+                                     @style(['background: ' . $previewBg])></div>
+                            </div>
+                            <p class="mt-1 text-xs text-gray-500">The <strong>slug</strong> is used in filter URLs. The color code is only for display.</p>
+                            @error('color_code') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                         </div>
 
                         <div>
@@ -107,3 +141,46 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+(function () {
+    var parentSel   = document.getElementById('parent_id');
+    var typeField   = document.getElementById('type_field');
+    var typeSel     = document.getElementById('type_select');
+    var colorField  = document.getElementById('color_code_field');
+    var colorInput  = document.getElementById('color_code_input');
+    var colorPicker = document.getElementById('color_picker');
+    var colorPreview= document.getElementById('color_preview');
+
+    function syncPreview(val) {
+        if (colorPreview && val) colorPreview.style.background = val;
+    }
+
+    colorInput.addEventListener('input', function () {
+        syncPreview(this.value);
+        if (/^#[0-9a-fA-F]{6}$/.test(this.value)) colorPicker.value = this.value;
+    });
+    colorPicker.addEventListener('input', function () {
+        colorInput.value = this.value;
+        syncPreview(this.value);
+    });
+
+    if (colorInput.value) syncPreview(colorInput.value);
+
+    function updateVisibility() {
+        var selectedOption = parentSel.options[parentSel.selectedIndex];
+        var parentType = selectedOption ? selectedOption.getAttribute('data-type') : null;
+        var hasParent = !!parentSel.value;
+
+        typeField.style.display = hasParent ? 'none' : '';
+
+        var parentIsColor = (parentType === 'color');
+        var typeIsColor   = (typeSel.value === 'color');
+        colorField.style.display = (parentIsColor || (!hasParent && typeIsColor)) ? '' : 'none';
+    }
+
+    parentSel.addEventListener('change', updateVisibility);
+    typeSel.addEventListener('change', updateVisibility);
+    updateVisibility();
+})();
+</script>

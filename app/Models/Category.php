@@ -17,13 +17,16 @@ class Category extends Model
         'parent_id',
         'status',
         'order',
+        'type',
+        'color_code',
         'display_on_home',
     ];
 
     protected $casts = [
-        'status' => 'boolean',
+        'status'          => 'boolean',
         'display_on_home' => 'boolean',
-        'order' => 'integer',
+        'order'           => 'integer',
+        // 'type' is a plain string: 'default' | 'color' | 'size'
     ];
 
     // Relationship with products (many-to-many)

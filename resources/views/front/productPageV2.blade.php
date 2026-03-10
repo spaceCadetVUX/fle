@@ -137,38 +137,78 @@
                     </div>
                 </div>
 
-                <!-- Categories (render root categories as labels; children as checkboxes) -->
-                <div class="filter-group mb-4">
-                    <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">Categories</h6>
+                <!-- Dynamic category filters: color-type parents → swatches, others → checkboxes -->
+                @if(isset($categories) && $categories->count())
+                    @foreach($categories as $parent)
+                        {{-- Skip size — already shown as size-button filter --}}
+                        @if($sizeCategory && $parent->id === $sizeCategory->id)
+                            @continue
+                        @endif
 
-                    @if(isset($categories) && $categories->count())
-                        @foreach($categories as $parent)
-                            {{-- Skip the size category — it's already shown as the special size-button filter above --}}
-                            @if($sizeCategory && $parent->id === $sizeCategory->id)
-                                @continue
-                            @endif
-                            <div class="mb-2">
-                                <div class="fw-bold">{{ $parent->name }}</div>
-                                @if($parent->children && $parent->children->count())
+                        @php
+                            // Treat as color parent if:
+                            //  (a) explicitly typed as 'color', OR
+                            //  (b) any child has a color_code set (catches missing/old type field)
+                            $isColorParent = ($parent->type === 'color')
+                                || $parent->children->filter(fn($c) => !empty($c->color_code))->count() > 0;
+                        @endphp
+
+                        <div class="filter-group mb-4">
+                            <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">
+                                {{ $parent->name }}
+                            </h6>
+
+                            @if($parent->children && $parent->children->count())
+                                @if($isColorParent)
+                                    {{-- ── Color swatches — exact same pattern as hardcoded Colors section ── --}}
+                                    <div class="d-flex flex-wrap gap-2 color-filters">
+                                        @foreach($parent->children as $child)
+                                            @php
+                                                $isChecked  = in_array($child->slug, $selectedSlugs);
+                                                $colorCode  = $child->color_code ?: '#cccccc';
+                                                $isLight    = $colorCode === '#ffffff' || strtolower($colorCode) === 'white';
+                                            @endphp
+                                            {{-- Hidden checkbox so JS tracks checked state --}}
+                                            <input class="category-checkbox visually-hidden"
+                                                   type="checkbox"
+                                                   id="color-cat-{{ $child->id }}"
+                                                   data-slug="{{ $child->slug }}"
+                                                   data-parent-slug="{{ $parent->slug }}"
+                                                   {{ $isChecked ? 'checked' : '' }}>
+                                            {{-- Label styled exactly like the hardcoded color-btn buttons --}}
+                                            <label for="color-cat-{{ $child->id }}"
+                                                   class="color-btn{{ $isChecked ? ' active' : '' }}"
+                                                   title="{{ $child->name }} ({{ $colorCode }})"
+                                                   @style([
+                                                       'background-color: ' . $colorCode,
+                                                       'display: block',
+                                                       'cursor: pointer',
+                                                       'border: 1px solid #ccc' => $isLight
+                                                   ])>
+                                            </label>
+                                        @endforeach
+                                    </div>
+                                @else
+                                    {{-- ── Standard checkboxes ── --}}
                                     @foreach($parent->children as $child)
                                         @php $isChecked = in_array($child->slug, $selectedSlugs); @endphp
                                         <div class="form-check filter-check">
                                             <input class="form-check-input category-checkbox"
-                                                type="checkbox"
-                                                id="cat-{{ $child->id }}"
-                                                data-slug="{{ $child->slug }}"
-                                                data-parent-slug="{{ $parent->slug }}"
-                                                {{ $isChecked ? 'checked' : '' }}>
+                                                   type="checkbox"
+                                                   id="cat-{{ $child->id }}"
+                                                   data-slug="{{ $child->slug }}"
+                                                   data-parent-slug="{{ $parent->slug }}"
+                                                   {{ $isChecked ? 'checked' : '' }}>
                                             <label class="form-check-label" for="cat-{{ $child->id }}">{{ $child->name }}</label>
                                         </div>
                                     @endforeach
                                 @endif
-                            </div>
-                        @endforeach
-                    @else
-                        <div class="text-muted">No categories found.</div>
-                    @endif
-                </div>
+                            @endif
+                        </div>
+                    @endforeach
+                @else
+                    <p class="text-muted small">No categories found.</p>
+                @endif
 
                 <!-- Tags  do not change this-->
                 <div class="filter-group mb-4">

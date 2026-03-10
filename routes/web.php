@@ -216,6 +216,7 @@ Route::prefix('{locale}')->where(['locale' => 'vi|en'])->group(function () {
         Route::get('/categories/{category}/edit', [DashboardController::class, 'editCategory'])->name('categories.edit');
         Route::put('/categories/{category}', [DashboardController::class, 'updateCategory'])->name('categories.update');
         Route::delete('/categories/{category}', [DashboardController::class, 'deleteCategory'])->name('categories.delete');
+        Route::post('/categories/reorder', [DashboardController::class, 'reorderCategories'])->name('categories.reorder');
 
         // Manage blog categories
         Route::get('/blog-categories', [DashboardController::class, 'blogCategories'])->name('blog-categories');

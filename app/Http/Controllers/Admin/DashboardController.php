@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -971,7 +972,7 @@ class DashboardController extends Controller
         }
 
         // Permanently remove pivot relations then force delete the category
-        \DB::transaction(function() use ($category) {
+        DB::transaction(function() use ($category) {
             // Detach any pivoted products (should be none due to the check above, but ensure cleanup)
             $category->products()->detach();
 
@@ -980,6 +981,23 @@ class DashboardController extends Controller
         });
 
         return redirect()->route('admin.categories')->with('success', 'Category deleted successfully!');
+    }
+
+    /**
+     * Reorder categories via AJAX (Drag and Drop)
+     */
+    public function reorderCategories(Request $request)
+    {
+        $validated = $request->validate([
+            'ordered_ids' => 'required|string', // comma-separated list of IDs
+        ]);
+
+        $ids = explode(',', $validated['ordered_ids']);
+        foreach ($ids as $index => $id) {
+            \App\Models\Category::where('id', $id)->update(['order' => $index]);
+        }
+
+        return redirect()->route('admin.categories')->with('success', 'Categories reordered successfully!');
     }
 
     /**

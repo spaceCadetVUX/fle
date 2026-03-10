@@ -124,18 +124,6 @@
                 </div>
                 @endif
 
-                <!-- Color  do not change this-->
-                <div class="filter-group mb-4">
-                    <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">Colors</h6>
-                    <div class="d-flex flex-wrap gap-2 color-filters">
-                        <button class="color-btn" style="background-color: #2e2e2e;"></button>
-                        <button class="color-btn" style="background-color: #8b6c4f;"></button>
-                        <button class="color-btn" style="background-color: #d4b896;"></button>
-                        <button class="color-btn" style="background-color: #e0ddd9;"></button>
-                        <button class="color-btn" style="background-color: #ffffff; border: 1px solid #ccc;"></button>
-                        <button class="color-btn" style="background-color: #1a1a1a;"></button>
-                    </div>
-                </div>
 
                 <!-- Dynamic category filters: color-type parents → swatches, others → checkboxes -->
                 @if(isset($categories) && $categories->count())

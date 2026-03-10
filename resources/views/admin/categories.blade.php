@@ -18,6 +18,13 @@
                    class="inline-flex items-center px-4 py-2 bg-pink-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-pink-700">
                     🎨 Add Color Category
                 </a>
+                <button type="button" onclick="document.getElementById('reorderModal').classList.remove('hidden')"
+                   class="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    Reorder Roots
+                </button>
             </div>
         </div>
     </x-slot>
@@ -222,4 +229,61 @@
             @endforelse
         </div>
     </div>
+    </div>
+
+    <!-- Reorder Modal -->
+    <div id="reorderModal" class="fixed inset-0 z-50 hidden overflow-y-auto h-full w-full flex items-center justify-center" style="background-color: rgba(0,0,0,0.5)">
+        <div class="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100">
+                    <svg class="h-6 w-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">Drag to Reorder Root Categories</h3>
+                <div class="mt-4 text-left p-2 rounded max-h-64 overflow-y-auto bg-gray-50 border border-gray-200" id="sortableList">
+                    @foreach($categories as $root)
+                        <div data-id="{{ $root->id }}" class="cursor-move p-3 border-b border-gray-100 bg-white mb-1 rounded shadow-sm flex items-center gap-3 hover:bg-gray-50 transition-colors">
+                            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                            <span class="text-sm font-medium text-gray-700">{{ $root->name }}</span>
+                        </div>
+                    @endforeach
+                </div>
+                <form id="reorderForm" action="{{ route('admin.categories.reorder') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="ordered_ids" id="orderedIdsInput">
+                    <div class="items-center px-4 py-3 mt-4 flex gap-2 justify-center">
+                        <button type="button" onclick="document.getElementById('reorderModal').classList.add('hidden')"
+                                class="px-4 py-2 bg-white text-gray-700 border border-gray-300 text-sm font-medium rounded-md w-full shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            Cancel
+                        </button>
+                        <button type="submit" 
+                                class="px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md w-full shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            Save Order
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load SortableJS -->
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var el = document.getElementById('sortableList');
+            if(el) {
+                var sortable = Sortable.create(el, {
+                    animation: 150,
+                    ghostClass: 'bg-indigo-50'
+                });
+
+                var form = document.getElementById('reorderForm');
+                form.addEventListener('submit', function(e) {
+                    var order = sortable.toArray();
+                    document.getElementById('orderedIdsInput').value = order.join(',');
+                });
+            }
+        });
+    </script>
 </x-app-layout>

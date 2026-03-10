@@ -143,6 +143,10 @@
 
                     @if(isset($categories) && $categories->count())
                         @foreach($categories as $parent)
+                            {{-- Skip the size category — it's already shown as the special size-button filter above --}}
+                            @if($sizeCategory && $parent->id === $sizeCategory->id)
+                                @continue
+                            @endif
                             <div class="mb-2">
                                 <div class="fw-bold">{{ $parent->name }}</div>
                                 @if($parent->children && $parent->children->count())

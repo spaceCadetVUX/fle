@@ -1,29 +1,22 @@
 @extends('front.layouts.frontend', [
-'seo' => [
-'title' => __('homev2.seo.title'),
-'description' => __('homev2.seo.description'),
-'keywords' => __('homev2.seo.keywords'),
-'image' => asset('images/tempSpace/fas (32).jpg'),
-'type' => 'website',
-'hreflangs' => [
-'en' => switch_locale_url('en'),
-'vi' => switch_locale_url('vi'),
-]
-]
+    'seo' => [
+        'title' => __('homev2.seo.title'),
+        'description' => __('homev2.seo.description'),
+        'keywords' => __('homev2.seo.keywords'),
+        'image' => asset('images/tempSpace/fas (32).jpg'),
+        'type' => 'website',
+        'hreflangs' => [
+            'en' => switch_locale_url('en'),
+            'vi' => switch_locale_url('vi'),
+        ]
+    ]
 ])
-
 
 @section('content')
 
-@push('head')
-@if(!empty($canonicalUrl))
-    <link rel="canonical" href="{{ $canonicalUrl }}">
-@endif
-@endpush
-
 {{-- ==========================================
          SHOP HERO
-    ========================================== --}}
+     ========================================== --}}
 
 <section class="shop-hero position-relative overflow-hidden">
     <img src="{{ asset('images/tempSpace/fas (30).jpg') }}" alt="Shop Hero Background" class="shop-hero-bg w-100 h-100 position-absolute top-0 start-0 object-fit-cover" style="z-index: 0; filter: brightness(0.6);">
@@ -43,10 +36,15 @@
 
 {{-- ==========================================
          TITLE & BREADCRUMBS
-    ========================================== --}}
+     ========================================== --}}
 <div class="shop-header text-center py-5 mt-3">
     <h2 class="fw-bold fs-3 mb-2">Summer collection</h2>
-    <p class="text-muted text-uppercase mb-0" style="font-size: 0.75rem; letter-spacing: 0.25em;">Home <span class="mx-1">&gt;</span> Shop</p>
+    <p class="text-muted text-uppercase mb-0" style="font-size: 0.75rem; letter-spacing: 0.25em;">
+        Home <span class="mx-1">&gt;</span> Shop
+        @if(isset($activeCategory))
+            <span class="mx-1">&gt;</span> {{ $activeCategory->name }}
+        @endif
+    </p>
 </div>
 
 <!-- MAIN SHOP CONTENT -->
@@ -62,7 +60,36 @@
             <div class="offcanvas-body flex-column px-4 px-lg-0 pb-4">
                 <h5 class="fw-bold mb-4 fs-6 d-none d-lg-block">Filters</h5>
 
-                <!-- Size (dynamic from categories) -->
+                {{-- -------------------------------------------------------
+                     Determine active slugs:
+                     • Path-based route (/danh-muc/{slug}) → $activeCategory
+                     • Query param (?category[]=slug)      → array format
+                     • Legacy query param (?category=slug1,slug2) → comma string
+                     ------------------------------------------------------- --}}
+                @php
+                    $activeCategorySlug = isset($activeCategory) ? $activeCategory->slug : null;
+
+                    $querySlugs = request()->input('category', []);
+                    if (is_string($querySlugs)) {
+                        // Legacy comma-separated fallback
+                        $querySlugs = array_filter(array_map('trim', explode(',', $querySlugs)));
+                    }
+                    if (!is_array($querySlugs)) {
+                        $querySlugs = [];
+                    }
+
+                    $selectedSlugs = array_values(array_unique(
+                        array_filter(array_merge(
+                            $activeCategorySlug ? [$activeCategorySlug] : [],
+                            $querySlugs
+                        ))
+                    ));
+
+                    // Base shop URL — always the clean shop index (no filter path)
+                    $shopBaseUrl = route(current_locale() . '.product.shop');
+                @endphp
+
+                <!-- Size (dynamic from categories) - rendered as checkboxes but styled as size buttons -->
                 @php
                     $sizeCategory = null;
                     if (isset($categories) && $categories instanceof \Illuminate\Support\Collection) {
@@ -75,20 +102,22 @@
                     <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">{{ $sizeCategory->name }}</h6>
                     <div class="d-flex flex-wrap gap-2 size-filters">
                         @foreach($sizeCategory->children as $child)
-                            @php
-                                $selectedSlugs = array_filter(array_map('trim', explode(',', request()->get('category', ''))));
-                                $isActive = in_array($child->slug, $selectedSlugs);
-                                // Build URL that toggles this child as the only selected category (simple behaviour)
-                                $url = request()->fullUrlWithQuery(['category' => $child->slug]);
-                            @endphp
-
-                            <a href="{{ $url }}" class="size-btn{{ $isActive ? ' active' : '' }}">{{ $child->name }}</a>
+                            @php $isChecked = in_array($child->slug, $selectedSlugs); @endphp
+                            <div>
+                                <input class="category-checkbox visually-hidden"
+                                    type="checkbox"
+                                    id="size-{{ $child->id }}"
+                                    data-slug="{{ $child->slug }}"
+                                    data-category-url="{{ route(current_locale() . '.product.category', $child->slug) }}"
+                                    {{ $isChecked ? 'checked' : '' }}>
+                                <label for="size-{{ $child->id }}" class="size-btn{{ $isChecked ? ' active' : '' }}">{{ $child->name }}</label>
+                            </div>
                         @endforeach
                     </div>
                 </div>
                 @endif
 
-                <!-- Color -->
+                <!-- Color  do not change this-->
                 <div class="filter-group mb-4">
                     <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">Colors</h6>
                     <div class="d-flex flex-wrap gap-2 color-filters">
@@ -101,70 +130,36 @@
                     </div>
                 </div>
 
-                <!-- Price -->
-                <div class="filter-group mb-4">
-                    <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">Prices</h6>
-                    <div class="form-check filter-check">
-                        <input class="form-check-input" type="checkbox" id="price1">
-                        <label class="form-check-label" for="price1">$0.00 - $15.00</label>
-                    </div>
-                    <div class="form-check filter-check">
-                        <input class="form-check-input" type="checkbox" id="price2" checked>
-                        <label class="form-check-label" for="price2">$15.00 - $20.00</label>
-                    </div>
-                    <div class="form-check filter-check">
-                        <input class="form-check-input" type="checkbox" id="price3">
-                        <label class="form-check-label" for="price3">$20.00 - $35.00</label>
-                    </div>
-                    <div class="form-check filter-check">
-                        <input class="form-check-input" type="checkbox" id="price4">
-                        <label class="form-check-label" for="price4">$35.00 - $50.00</label>
-                    </div>
-                </div>
-
-                <!-- Brands -->
-                <div class="filter-group mb-4">
-                    <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">Brands</h6>
-                    <div class="form-check filter-check">
-                        <input class="form-check-input" type="checkbox" id="brand1">
-                        <label class="form-check-label" for="brand1">Mango</label>
-                    </div>
-                    <div class="form-check filter-check">
-                        <input class="form-check-input" type="checkbox" id="brand2">
-                        <label class="form-check-label" for="brand2">Zara</label>
-                    </div>
-                    <div class="form-check filter-check">
-                        <input class="form-check-input" type="checkbox" id="brand3" checked>
-                        <label class="form-check-label" for="brand3">H&amp;M</label>
-                    </div>
-                    <div class="form-check filter-check">
-                        <input class="form-check-input" type="checkbox" id="brand4">
-                        <label class="form-check-label" for="brand4">Pull&amp;Bear</label>
-                    </div>
-                </div>
-
-                <!-- Categories -->
+                <!-- Categories (render root categories as labels; children as checkboxes) -->
                 <div class="filter-group mb-4">
                     <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">Categories</h6>
-                    <div class="form-check filter-check">
-                        <input class="form-check-input" type="checkbox" id="cat1" checked>
-                        <label class="form-check-label" for="cat1">Women</label>
-                    </div>
-                    <div class="form-check filter-check">
-                        <input class="form-check-input" type="checkbox" id="cat2">
-                        <label class="form-check-label" for="cat2">Men</label>
-                    </div>
-                    <div class="form-check filter-check">
-                        <input class="form-check-input" type="checkbox" id="cat3">
-                        <label class="form-check-label" for="cat3">Accessories</label>
-                    </div>
-                    <div class="form-check filter-check">
-                        <input class="form-check-input" type="checkbox" id="cat4">
-                        <label class="form-check-label" for="cat4">Kids</label>
-                    </div>
+
+                    @if(isset($categories) && $categories->count())
+                        @foreach($categories as $parent)
+                            <div class="mb-2">
+                                <div class="fw-bold">{{ $parent->name }}</div>
+                                @if($parent->children && $parent->children->count())
+                                    @foreach($parent->children as $child)
+                                        @php $isChecked = in_array($child->slug, $selectedSlugs); @endphp
+                                        <div class="form-check filter-check">
+                                            <input class="form-check-input category-checkbox"
+                                                type="checkbox"
+                                                id="cat-{{ $child->id }}"
+                                                data-slug="{{ $child->slug }}"
+                                                data-category-url="{{ route(current_locale() . '.product.category', $child->slug) }}"
+                                                {{ $isChecked ? 'checked' : '' }}>
+                                            <label class="form-check-label" for="cat-{{ $child->id }}">{{ $child->name }}</label>
+                                        </div>
+                                    @endforeach
+                                @endif
+                            </div>
+                        @endforeach
+                    @else
+                        <div class="text-muted">No categories found.</div>
+                    @endif
                 </div>
 
-                <!-- Tags -->
+                <!-- Tags  do not change this-->
                 <div class="filter-group mb-4">
                     <h6 class="filter-title font-xs fw-bold text-uppercase letter-wide text-muted mb-3">Tags</h6>
                     <div class="d-flex flex-wrap gap-2 tag-filters">
@@ -199,13 +194,13 @@
                 <div class="col">
                     <a href="{{ route(current_locale() . '.product.show', $product->slug) }}" class="text-decoration-none text-dark d-block shop-product-card">
                         @include('front.components.product-card', [
-                        'image' => $product->image_url ? (str_starts_with($product->image_url, 'http') ? $product->image_url : asset($product->image_url)) : asset('assets/img/product/default.jpg'),
-                        'name' => $product->name,
-                        'price' => ($product->sale_price && $product->sale_price < $product->price) ? number_format($product->sale_price, 0, ",", ".") . "đ" : number_format($product->price, 0, ",", ".") . "đ",
+                            'image' => $product->image_url ? (str_starts_with($product->image_url, 'http') ? $product->image_url : asset($product->image_url)) : asset('assets/img/product/default.jpg'),
+                            'name' => $product->name,
+                            'price' => ($product->sale_price && $product->sale_price < $product->price) ? number_format($product->sale_price, 0, ",", ".") . "đ" : number_format($product->price, 0, ",", ".") . "đ",
                             'oldPrice' => ($product->sale_price && $product->sale_price < $product->price) ? number_format($product->price, 0, ",", ".") . "đ" : null,
-                                'tag' => $product->featured ? 'badge-featured' : ($product->sale_price && $product->sale_price < $product->price ? 'badge-sale' : null),
-                                    'tagLabel' => $product->featured ? __('shop.labels.badge_featured') : ($product->sale_price && $product->sale_price < $product->price ? __('shop.labels.badge_sale') : null)
-                                        ])
+                            'tag' => $product->featured ? 'badge-featured' : ($product->sale_price && $product->sale_price < $product->price ? 'badge-sale' : null),
+                            'tagLabel' => $product->featured ? __('shop.labels.badge_featured') : ($product->sale_price && $product->sale_price < $product->price ? __('shop.labels.badge_sale') : null)
+                        ])
                     </a>
                 </div>
                 @empty
@@ -224,5 +219,74 @@
         </main>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var shopBaseUrl = '{{ $shopBaseUrl }}';
+
+    /**
+     * Collect checked category data (slug + dedicated SEO URL)
+     */
+    function getCheckedData() {
+        return Array.from(document.querySelectorAll('.category-checkbox:checked')).map(function (el) {
+            return {
+                slug: el.dataset.slug,
+                categoryUrl: el.dataset.categoryUrl || null
+            };
+        });
+    }
+
+    /**
+     * Build SEO-friendly filter URL:
+     *   0 selected  → base shop URL  (e.g. /vi/san-pham)
+     *   1 selected  → clean path URL (e.g. /vi/san-pham/danh-muc/ao-thun)
+     *   2+ selected → ?category[]=slug1&category[]=slug2 on base shop URL
+     */
+    function buildFilterUrl(checkedData) {
+        if (checkedData.length === 0) {
+            return shopBaseUrl;
+        }
+
+        // Preserve any non-category query params already on the page (e.g. sort)
+        var existingParams = new URLSearchParams(window.location.search);
+        existingParams.delete('category');
+        existingParams.delete('category[]');
+
+        if (checkedData.length === 1 && checkedData[0].categoryUrl) {
+            // Single category → clean SEO path
+            var remaining = existingParams.toString();
+            return checkedData[0].categoryUrl + (remaining ? '?' + remaining : '');
+        }
+
+        // Multiple categories → array query params on the base shop URL
+        var params = new URLSearchParams();
+        existingParams.forEach(function (val, key) {
+            params.append(key, val);
+        });
+        checkedData.forEach(function (item) {
+            params.append('category[]', item.slug);
+        });
+        return shopBaseUrl + '?' + params.toString();
+    }
+
+    // Apply button
+    var applyBtn = document.getElementById('applyFiltersBtn');
+    if (applyBtn) {
+        applyBtn.addEventListener('click', function () {
+            window.location.href = buildFilterUrl(getCheckedData());
+        });
+    }
+
+    // Clear All → always navigate back to the base shop URL
+    var clearBtn = document.getElementById('clearFiltersBtn');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function () {
+            window.location.href = shopBaseUrl;
+        });
+    }
+});
+</script>
+@endpush
 
 @endsection

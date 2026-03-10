@@ -12,38 +12,22 @@ class ProductController extends Controller
     /**
      * Display all products (shop page)
      */
-    public function index(Request $request, $category = null)
+    public function index(Request $request)
     {
-        // If legacy query param 'category' is present but path category is not,
-        // redirect to the SEO-friendly path-style URL using the first slug.
-        if (is_null($category) && $request->has('category') && $request->get('category')) {
-            $first = explode(',', $request->get('category'))[0] ?? null;
-            if ($first) {
-                // Determine locale from URL segment (first segment should be 'vi' or 'en')
-                $locale = $request->segment(1) ?: app()->getLocale();
-                $query = $request->query();
-                unset($query['category']);
-
-                // Build path according to locale product prefix
-                $pathPrefix = $locale === 'vi' ? 'san-pham' : 'products';
-                $path = url("{$locale}/{$pathPrefix}/{$first}");
-                $newUrl = $path . (count($query) ? ('?' . http_build_query($query)) : '');
-                return redirect()->to($newUrl, 301);
-            }
-        }
         // Debug logging
         Log::info('Shop filter request', [
             'brand' => $request->brand,
-            'category' => $request->category,
+            'category' => $request->input('category'),
             'q' => $request->q,
             'sort' => $request->sort,
             'all_params' => $request->all()
         ]);
 
-        // Validate input
+        // Validate input — category can be array (category[]) or string (legacy)
         $request->validate([
             'brand' => 'nullable|string',
-            'category' => 'nullable|string',
+            'category' => 'nullable',
+            'category.*' => 'nullable|string',
             'q' => 'nullable|string|max:255',
             'sort' => 'nullable|in:newest,popular,price-low,price-high'
         ]);
@@ -60,17 +44,22 @@ class ProductController extends Controller
             }
         }
 
-        // Determine category slugs from path or query param
+        // Filter by categories — supports both:
+        //   New:    ?category[]=slug1&category[]=slug2  (array format, SEO multi-select)
+        //   Legacy: ?category=slug1,slug2               (comma-separated, backward compat)
+        $rawCategory = $request->input('category');
         $categorySlugs = [];
-        if ($category) {
-            $categorySlugs[] = $category;
-        } elseif ($request->has('category') && !empty($request->category)) {
-            $categorySlugs = explode(',', $request->category);
-            $categorySlugs = array_filter(array_map('trim', $categorySlugs));
+
+        if (!empty($rawCategory)) {
+            if (is_array($rawCategory)) {
+                $categorySlugs = array_filter(array_map('trim', $rawCategory));
+            } elseif (is_string($rawCategory)) {
+                $categorySlugs = array_filter(array_map('trim', explode(',', $rawCategory)));
+            }
         }
 
         if (!empty($categorySlugs)) {
-            // Resolve slugs to IDs, and include direct children IDs so parent selection includes child products
+            // Resolve slugs to IDs, include direct children
             $categoryIds = [];
             $categoriesFound = \App\Models\Category::whereIn('slug', $categorySlugs)->with('children')->get();
 
@@ -85,7 +74,7 @@ class ProductController extends Controller
 
             if (!empty($categoryIds)) {
                 Log::info('Filtering by category ids (including children)', ['category_slugs' => $categorySlugs, 'category_ids' => $categoryIds]);
-                $query->whereHas('categories', function($q) use ($categoryIds) {
+                $query->whereHas('categories', function ($q) use ($categoryIds) {
                     $q->whereIn('categories.id', $categoryIds);
                 });
             }
@@ -139,29 +128,9 @@ class ProductController extends Controller
             ->orderBy('order')
             ->get();
 
-        // Build canonical URL (prefer path-style when a single category path is used)
-        $locale = request()->segment(1) ?: app()->getLocale();
-        $pathPrefix = $locale === 'vi' ? 'san-pham' : 'products';
-        $canonicalUrl = url("{$locale}/{$pathPrefix}" . ($category ? '/' . $category : ''));
-
-        return view('front.productPageV2', compact('products', 'brands', 'categories', 'canonicalUrl'));
+        return view('front.productPageV2', compact('products', 'brands', 'categories'));
     }
 
-    /**
-     * Resolve a slug under /san-pham/{slug} — decide whether it's a category or a product.
-     */
-    public function resolve(Request $request, $slug)
-    {
-        // If a category exists with this slug, show the category listing.
-        $category = \App\Models\Category::where('slug', $slug)->first();
-        if ($category) {
-            // Call index with the category slug as the path category.
-            return $this->index($request, $slug);
-        }
-
-        // Otherwise treat as product slug.
-        return $this->show($slug);
-    }
 
     /**
      * Display single product detail
@@ -194,6 +163,67 @@ class ProductController extends Controller
             Log::error('Error loading product: ' . $e->getMessage());
             return back()->with('error', 'Đã xảy ra lỗi khi tải sản phẩm. Vui lòng thử lại.');
         }
+    }
+
+    /**
+     * Display products by category (SEO-friendly path-based URL)
+     */
+    public function byCategory(Request $request, $categorySlug)
+    {
+        // Find the category by slug
+        $activeCategory = \App\Models\Category::where('slug', $categorySlug)
+            ->where('status', 1)
+            ->with('children', 'parent')
+            ->firstOrFail();
+
+        // Collect this category and all its children IDs
+        $categoryIds = [$activeCategory->id];
+        if ($activeCategory->children && $activeCategory->children->count() > 0) {
+            $categoryIds = array_merge($categoryIds, $activeCategory->children->pluck('id')->toArray());
+        }
+
+        $query = Product::published()
+            ->with('categories')
+            ->whereHas('categories', function ($q) use ($categoryIds) {
+                $q->whereIn('categories.id', $categoryIds);
+            });
+
+        // Sorting
+        $sort = $request->get('sort', 'newest');
+        switch ($sort) {
+            case 'popular':
+                $query->orderBy('view_count', 'desc');
+                break;
+            case 'price-low':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price-high':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'newest':
+            default:
+                $query->orderBy('featured', 'desc')
+                      ->orderBy('created_at', 'desc');
+                break;
+        }
+
+        $products = $query->paginate(12)->withQueryString();
+
+        // Get all active brands for the filter sidebar
+        $brands = \App\Models\Brand::where('status', 1)
+            ->orderBy('name')
+            ->get();
+
+        // Get all active categories (hierarchical)
+        $categories = \App\Models\Category::whereNull('parent_id')
+            ->where('status', 1)
+            ->with(['children' => function ($q) {
+                $q->where('status', 1)->orderBy('order');
+            }])
+            ->orderBy('order')
+            ->get();
+
+        return view('front.productPageV2', compact('products', 'brands', 'categories', 'activeCategory'));
     }
 
     /**

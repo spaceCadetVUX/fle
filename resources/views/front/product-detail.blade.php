@@ -118,7 +118,6 @@
         <!-- ── RIGHT: Product Info ── -->
         <div class="col-lg-5 fade-up">
             <div class="pd-info">
-
             <!-- Brand + Wishlist -->
             <div class="pd-info-top">
                 <span class="pd-brand">{{ $product->brand }}</span>
@@ -126,10 +125,9 @@
                 <i class="bi bi-heart"></i>
                 </button>
             </div>
-
             <!-- Product name -->
             <h1 class="pd-title">{{ $product->name }}</h1>
-
+            <p class="text-muted mb-1">SKU: {{ $product->sku }}</p>
             <!-- Rating -->
             <div class="pd-rating">
                 @php
@@ -155,18 +153,16 @@
                     'class' => 'stock-unknown'
                 ];
                 @endphp
-                <span class="pd-review-count">(128 Reviews)</span>
                 <span class="pd-stock {{ $status['class'] }}">
                     <i class="bi {{ $status['icon'] }}"></i>
                     {{ $status['label'] }}
                 </span>
             </div>
-
             <!-- Price -->
             <div class="pd-price-row">
-                <span class="pd-price">5,200,000 VND</span>
-                <span class="pd-old-price">6,500,000 VND</span>
-                <span class="pd-discount-badge">–20%</span>
+                <span class="pd-price"> {{ number_format($product->sale_price, 0, ',', '.') }}đ</span>
+                <span class="pd-old-price">{{ number_format($product->price, 0, ',', '.') }}đ</span>
+                <span class="pd-discount-badge">- {{ round((($product->price - $product->sale_price) / $product->price) * 100) }}%</span>
             </div>
 
             <!-- Flash Sale Countdown -->
@@ -195,10 +191,7 @@
 
             <!-- Description -->
             <p class="pd-description">
-                A timeless statement piece crafted from premium full-grain leather.
-                Slim cut with a refined lapel and polished hardware — engineered for the
-                man who commands every room he enters. Pairs effortlessly with dark denim
-                or tailored trousers.
+                {{ $product->short_description }}
             </p>
 
             <!-- Size Selector -->
@@ -294,6 +287,174 @@
             </div><!-- /.pd-info -->
         </div><!-- /.col -->
         </div><!-- /.row -->
+    </div><!-- /.container -->
+    </section>
+
+
+
+        <!-- ==========================================
+        PRODUCT TABS (Description / Reviews)
+        ========================================== -->
+    <section class="pd-tabs-section">
+    <div class="container">
+        <div class="pd-tabs" id="pdTabs">
+        <button class="pd-tab active" data-tab="description">Description</button>
+        <button class="pd-tab" data-tab="details">Details & Care</button>
+        <button class="pd-tab" data-tab="reviews">Reviews (128)</button>
+        </div>
+
+        <div class="pd-tab-content" id="pdTabContent">
+
+        <!-- Tab: Description -->
+        <div class="pd-tab-panel active" data-panel="description">
+            <div class="row g-5 align-items-center">
+            <div class="col-md-6">
+                <h3 class="pd-desc-heading">Crafted for the Modern Gentleman</h3>
+                <p>Our signature Leather Jacket is crafted from full-grain bovine leather, sourced from certified
+                tanneries in Northern Italy. The slim-fit silhouette is reinforced with a mid-weight quilted lining
+                that provides warmth without sacrificing structure.</p>
+                <p>Polished gunmetal hardware, functional interior pockets, and a perfectly weighted collar make this
+                the ultimate wardrobe investment.</p>
+                <ul class="pd-desc-list">
+                <li><i class="bi bi-check2"></i> Full-grain Italian leather</li>
+                <li><i class="bi bi-check2"></i> Quilted viscose lining</li>
+                <li><i class="bi bi-check2"></i> YKK gunmetal zippers</li>
+                <li><i class="bi bi-check2"></i> Slim fit, true to size</li>
+                <li><i class="bi bi-check2"></i> Made in Vietnam</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <div class="pd-desc-img-wrap">
+                <img src="fashion/fas (57).jpg" alt="Leather Jacket Detail" />
+                </div>
+            </div>
+            </div>
+        </div>
+
+        <!-- Tab: Details & Care -->
+        <div class="pd-tab-panel" data-panel="details">
+            <div class="row g-4">
+            <div class="col-md-6">
+                <h4 class="pd-details-heading">Product Details</h4>
+                <table class="pd-details-table">
+                <tr><td>Material</td><td>100% Full-Grain Leather</td></tr>
+                <tr><td>Lining</td><td>Quilted Viscose</td></tr>
+                <tr><td>Fit</td><td>Slim Fit</td></tr>
+                <tr><td>Collar</td><td>Notched Lapel</td></tr>
+                <tr><td>Closure</td><td>Front Zip with Snap Button</td></tr>
+                <tr><td>Pockets</td><td>2 Side + 1 Interior</td></tr>
+                <tr><td>Origin</td><td>Made in Vietnam</td></tr>
+                <tr><td>SKU</td><td>CLB-LJ-BLK-001</td></tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <h4 class="pd-details-heading">Care Instructions</h4>
+                <ul class="pd-care-list">
+                <li><i class="bi bi-droplet-slash"></i> Do not wash in machine</li>
+                <li><i class="bi bi-thermometer-low"></i> Do not tumble dry</li>
+                <li><i class="bi bi-x-circle"></i> Do not bleach</li>
+                <li><i class="bi bi-brush"></i> Wipe with damp cloth only</li>
+                <li><i class="bi bi-bag"></i> Store in dust bag when not in use</li>
+                <li><i class="bi bi-star"></i> Professional leather cleaning recommended</li>
+                </ul>
+            </div>
+            </div>
+        </div>
+
+        <!-- Tab: Reviews -->
+        <div class="pd-tab-panel" data-panel="reviews">
+            <div class="row g-5">
+            <!-- Rating Summary -->
+            <div class="col-md-4">
+                <div class="pd-review-summary">
+                <div class="pd-review-avg">4.5</div>
+                <div class="pd-review-stars-lg">
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                    <i class="bi bi-star-half"></i>
+                </div>
+                <p class="pd-review-total">Based on 128 reviews</p>
+                <div class="pd-review-bars">
+                    <div class="pd-review-bar-row"><span>5★</span>
+                    <div class="pd-bar"><div class="pd-bar-fill" style="width:72%"></div></div>
+                    <span>72%</span>
+                    </div>
+                    <div class="pd-review-bar-row"><span>4★</span>
+                    <div class="pd-bar"><div class="pd-bar-fill" style="width:18%"></div></div>
+                    <span>18%</span>
+                    </div>
+                    <div class="pd-review-bar-row"><span>3★</span>
+                    <div class="pd-bar"><div class="pd-bar-fill" style="width:6%"></div></div>
+                    <span>6%</span>
+                    </div>
+                    <div class="pd-review-bar-row"><span>2★</span>
+                    <div class="pd-bar"><div class="pd-bar-fill" style="width:3%"></div></div>
+                    <span>3%</span>
+                    </div>
+                    <div class="pd-review-bar-row"><span>1★</span>
+                    <div class="pd-bar"><div class="pd-bar-fill" style="width:1%"></div></div>
+                    <span>1%</span>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <!-- Review Cards -->
+            <div class="col-md-8">
+                <div class="pd-review-list">
+                <!-- Review 1 -->
+                <div class="pd-review-card">
+                    <div class="pd-review-header">
+                    <div class="pd-reviewer-avatar">M</div>
+                    <div>
+                        <p class="pd-reviewer-name">Minh P.</p>
+                        <div class="pd-reviewer-stars">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+                    <span class="pd-review-date ms-auto">Feb 2026</span>
+                    </div>
+                    <p class="pd-review-text">Absolutely stunning jacket. The leather quality is exceptional — very supple right out of the box. Fits true to size and the stitching is immaculate.</p>
+                </div>
+                <!-- Review 2 -->
+                <div class="pd-review-card">
+                    <div class="pd-review-header">
+                    <div class="pd-reviewer-avatar">A</div>
+                    <div>
+                        <p class="pd-reviewer-name">An T.</p>
+                        <div class="pd-reviewer-stars">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star"></i>
+                        </div>
+                    </div>
+                    <span class="pd-review-date ms-auto">Jan 2026</span>
+                    </div>
+                    <p class="pd-review-text">Great investment piece. Slightly stiff at first but breaks in beautifully. The lining keeps me warm without bulk. Delivery was fast too.</p>
+                </div>
+                <!-- Review 3 -->
+                <div class="pd-review-card">
+                    <div class="pd-review-header">
+                    <div class="pd-reviewer-avatar">H</div>
+                    <div>
+                        <p class="pd-reviewer-name">Hana N.</p>
+                        <div class="pd-reviewer-stars">
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                        <i class="bi bi-star-half"></i>
+                        </div>
+                    </div>
+                    <span class="pd-review-date ms-auto">Dec 2025</span>
+                    </div>
+                    <p class="pd-review-text">Gorgeous in person. The camel colour is so rich. Bought it as a gift and my partner absolutely loves it. Would definitely shop Flevie again.</p>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+
+        </div><!-- /.pd-tab-content -->
     </div><!-- /.container -->
     </section>
 

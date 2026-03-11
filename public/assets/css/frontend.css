@@ -36,7 +36,7 @@
   --fw-medium: 500;
   --fw-semibold: 600;
   --fw-bold: 700;
-  --fw-black: 900;
+  --fw-black: 800;
 
   /* Spacing */
   --section-py: 5rem;
@@ -2487,7 +2487,7 @@ calibre-blog-grid .carousel-dot {
 }
 
 .pd-brand {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: var(--fw-semibold);
   letter-spacing: 0.3em;
   text-transform: uppercase;

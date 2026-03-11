@@ -132,15 +132,34 @@
 
             <!-- Rating -->
             <div class="pd-rating">
-                <span class="pd-stars">
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-fill"></i>
-                <i class="bi bi-star-half"></i>
-                </span>
+                @php
+                $status = [
+                    'in_stock' => [
+                        'label' => 'In Stock',
+                        'icon' => 'bi-check-circle-fill',
+                        'class' => 'stock-in'
+                    ],
+                    'on_backorder' => [
+                        'label' => 'On Backorder',
+                        'icon' => 'bi-clock-fill',
+                        'class' => 'stock-backorder'
+                    ],
+                    'out_of_stock' => [
+                        'label' => 'Out of Stock',
+                        'icon' => 'bi-x-circle-fill',
+                        'class' => 'stock-out'
+                    ],
+                ][$product->stock_status] ?? [
+                    'label' => 'Unknown',
+                    'icon' => 'bi-question-circle-fill',
+                    'class' => 'stock-unknown'
+                ];
+                @endphp
                 <span class="pd-review-count">(128 Reviews)</span>
-                <span class="pd-in-stock"><i class="bi bi-check-circle-fill"></i> In Stock</span>
+                <span class="pd-stock {{ $status['class'] }}">
+                    <i class="bi {{ $status['icon'] }}"></i>
+                    {{ $status['label'] }}
+                </span>
             </div>
 
             <!-- Price -->

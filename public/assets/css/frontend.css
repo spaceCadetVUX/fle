@@ -94,6 +94,25 @@ ul {
   margin: 0;
 }
 
+.stock-in{
+    color:#16a34a;
+    font-weight:600;
+}
+
+.stock-backorder{
+    color:#ca8a04;
+    font-weight:600;
+}
+
+.stock-out{
+    color:#dc2626;
+    font-weight:600;
+}
+
+.stock-unknown{
+    color:#6b7280;
+}
+
 /* ── Utility helpers ────────────────────────────────────────── */
 .section-pad {
   padding: var(--section-py) 0;

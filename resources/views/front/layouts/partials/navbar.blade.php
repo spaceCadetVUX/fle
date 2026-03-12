@@ -19,18 +19,13 @@
             <ul class="navbar-nav mx-auto">
 
                 <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">Home</a>
+                    <a class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}" href="{{ route('home') }}">{{ __('nav.home_button') }}</a>
                 </li>
 
                 <li class="nav-item custom-dropdown-link">
-                    <a class="nav-link">Shop <i class="bi bi-chevron-down ms-1 nav-dropdown-icon"></i></a>
+                    <a class="nav-link">{{ __('nav.Shop_button') }} <i class="bi bi-chevron-down ms-1 nav-dropdown-icon"></i></a>
                     <ul class="custom-dropdown-menu">
-                        {{-- <li><a href="{{ route('products') }}">All Products</a></li>
-                        <li><a href="{{ route('products') }}">Women's Collection</a></li>
-                        <li><a href="{{ route('products') }}">Men's Collection</a></li>
-                        <li><a href="{{ route('products') }}">Product Details</a></li>
-                        <li><a href="{{ route('home') }}#deals">Deals of the Month</a></li>
-                        <li><a href="{{ route('cart') }}">Cart</a></li> --}}
+                        <li><a href="{{ route(current_locale().'.product.shop') }}">{{ __('nav.all_Products') }}</a></li>
                     </ul>
                 </li>
 
@@ -39,7 +34,7 @@
                 </li>
 
                 <li class="nav-item custom-dropdown-link">
-                    <a class="nav-link">Pages <i class="bi bi-chevron-down ms-1 nav-dropdown-icon"></i></a>
+                    <a class="nav-link">{{ __('nav.page_button') }} <i class="bi bi-chevron-down ms-1 nav-dropdown-icon"></i></a>
                     <ul class="custom-dropdown-menu">
                         {{-- <li><a href="{{ route('products') }}">Shop Dashboard</a></li>
                         <li><a href="{{ route('home') }}#featured">Brands</a></li>

@@ -18,15 +18,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
     <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet"
-          href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- Vite Assets -->
     <link rel="stylesheet" href="{{ asset('assets/css/frontend.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}">
     <script src="{{ asset('assets/js/frontend.js') }}"></script>
- 
+
     {{-- Page specific head content --}}
     @stack('head')
 </head>

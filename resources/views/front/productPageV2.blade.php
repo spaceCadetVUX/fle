@@ -35,8 +35,8 @@
 </section>
 
 {{-- ==========================================
-         TITLE & BREADCRUMBS
-     ========================================== --}}
+        TITLE & BREADCRUMBS
+    ========================================== --}}
 <div class="shop-header text-center py-5 mt-3">
     <h2 class="fw-bold fs-3 mb-2">Summer collection</h2>
     <p class="text-muted text-uppercase mb-0" style="font-size: 0.75rem; letter-spacing: 0.25em;">
@@ -79,12 +79,12 @@
             <div class="offcanvas-body flex-column px-4 px-lg-0 pb-4">
                 <h5 class="fw-bold mb-4 fs-6 d-none d-lg-block">Filters</h5>
 
-                {{-- -------------------------------------------------------
-                     Determine active child slugs:
-                     $activeSlugs is injected by byCategory() controller when
-                     the user is on /danh-muc?brand=zara,hm&size=m
-                     On the main shop index, $activeSlugs is not set → no filters.
-                     ------------------------------------------------------- --}}
+            {{-- -------------------------------------------------------
+                    Determine active child slugs:
+                    $activeSlugs is injected by byCategory() controller when
+                    the user is on /danh-muc?brand=zara,hm&size=m
+                    On the main shop index, $activeSlugs is not set → no filters.
+                    ------------------------------------------------------- --}}
                 @php
                     // $activeSlugs is set by byCategory controller (flat array of selected child slugs)
                     // On the shop index page it's not set — read nothing (no filter active)
@@ -134,9 +134,6 @@
                         @endif
 
                         @php
-                            // Treat as color parent if:
-                            //  (a) explicitly typed as 'color', OR
-                            //  (b) any child has a color_code set (catches missing/old type field)
                             $isColorParent = ($parent->type === 'color')
                                 || $parent->children->filter(fn($c) => !empty($c->color_code))->count() > 0;
                         @endphp
@@ -157,22 +154,22 @@
                                                 $isLight    = $colorCode === '#ffffff' || strtolower($colorCode) === 'white';
                                             @endphp
                                             {{-- Hidden checkbox so JS tracks checked state --}}
-                                            <input class="category-checkbox visually-hidden"
-                                                   type="checkbox"
-                                                   id="color-cat-{{ $child->id }}"
-                                                   data-slug="{{ $child->slug }}"
-                                                   data-parent-slug="{{ $parent->slug }}"
-                                                   {{ $isChecked ? 'checked' : '' }}>
-                                            {{-- Label styled exactly like the hardcoded color-btn buttons --}}
-                                            <label for="color-cat-{{ $child->id }}"
-                                                   class="color-btn{{ $isChecked ? ' active' : '' }}"
-                                                   title="{{ $child->name }} ({{ $colorCode }})"
-                                                   @style([
-                                                       'background-color: ' . $colorCode,
-                                                       'display: block',
-                                                       'cursor: pointer',
-                                                       'border: 1px solid #ccc' => $isLight
-                                                   ])>
+                                        <input class="category-checkbox visually-hidden"
+                                                type="checkbox"
+                                                id="color-cat-{{ $child->id }}"
+                                                data-slug="{{ $child->slug }}"
+                                                data-parent-slug="{{ $parent->slug }}"
+                                                {{ $isChecked ? 'checked' : '' }}>
+                                        {{-- Label styled exactly like the hardcoded color-btn buttons --}}
+                                        <label for="color-cat-{{ $child->id }}"
+                                                class="color-btn{{ $isChecked ? ' active' : '' }}"
+                                                title="{{ $child->name }} ({{ $colorCode }})"
+                                                @style([
+                                                    'background-color: ' . $colorCode,
+                                                    'display: block',
+                                                    'cursor: pointer',
+                                                    'border: 1px solid #ccc' => $isLight
+                                                ])>
                                             </label>
                                         @endforeach
                                     </div>
@@ -182,11 +179,11 @@
                                         @php $isChecked = in_array($child->slug, $selectedSlugs); @endphp
                                         <div class="form-check filter-check">
                                             <input class="form-check-input category-checkbox"
-                                                   type="checkbox"
-                                                   id="cat-{{ $child->id }}"
-                                                   data-slug="{{ $child->slug }}"
-                                                   data-parent-slug="{{ $parent->slug }}"
-                                                   {{ $isChecked ? 'checked' : '' }}>
+                                                type="checkbox"
+                                                id="cat-{{ $child->id }}"
+                                                data-slug="{{ $child->slug }}"
+                                                data-parent-slug="{{ $parent->slug }}"
+                                                {{ $isChecked ? 'checked' : '' }}>
                                             <label class="form-check-label" for="cat-{{ $child->id }}">{{ $child->name }}</label>
                                         </div>
                                     @endforeach
